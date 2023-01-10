@@ -2,10 +2,12 @@ import * as Joi from '@hapi/joi';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { BazaDanychModule } from './bazadanych/bazadanych.module';
+import { KlientModule } from './klient/klient.module';
 import { SamochodModule } from './samochod/samochod.module';
 
 @Module({
   imports: [
+    KlientModule,
     SamochodModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
@@ -15,9 +17,9 @@ import { SamochodModule } from './samochod/samochod.module';
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         PORT: Joi.number(),
-      })
+      }),
     }),
-    BazaDanychModule
+    BazaDanychModule,
   ],
   controllers: [],
   providers: [],
