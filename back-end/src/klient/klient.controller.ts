@@ -20,5 +20,10 @@ export default class KlientController {
     return this.klientService.weryfikacja_danych(Number(id));
   }
 
+  @Get('historia/:id')
+  async historia(@Param('id') id: string) {
+    return this.klientService.historiaKlienta(Number(id));
+  }
+
   //reszta po zrobieniu platnosci
 }

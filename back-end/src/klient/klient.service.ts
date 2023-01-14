@@ -14,6 +14,8 @@ export default class KlientService {
   constructor(
     @InjectRepository(Klient)
     private klientRepository: Repository<Klient>,
+    @InjectRepository(Wypozyczenie)
+    private wypozyczenieRepository: Repository<Wypozyczenie>,
   ) {}
 
   wybierzDate() {
@@ -37,5 +39,9 @@ export default class KlientService {
     return klient.weryfikacjaDanych();
   }
 
-  async historiaKlienta(id: number) {}
+  async historiaKlienta(id_klienta: number) {
+    const wypozyczenie = await this.wypozyczenieRepository.find({
+      where: { id_klienta },
+    });
+  }
 }
