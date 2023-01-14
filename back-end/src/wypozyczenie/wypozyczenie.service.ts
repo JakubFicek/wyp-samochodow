@@ -9,7 +9,7 @@ import Wypozyczenie from './wypozyczenie.entity';
 export default class WypozyczenieService {
   constructor(
     @InjectRepository(Wypozyczenie)
-    private wypozyczenieRepository: Repository<Wypozyczenie>,
+    public wypozyczenieRepository: Repository<Wypozyczenie>,
   ) {}
 
   znajdzWypozyczenie(nr_wyp: number) {
@@ -23,11 +23,16 @@ export default class WypozyczenieService {
     );
   }
 
-  sprawdzHistorieKlienta(k: Klient) {
-    // dodać historię do klienta
-  }
+  //FUNKCJA POD TYM JEST ZUPEŁNIE BEZ SENSU W WYPOŻYCZENIU!
+  //Dodam metodę do klienta
+  //sprawdzHistorieKlienta(k: Klient) {
+  // dodać historię do klienta
+  //}
 
-  sprawdzHistorie() {
-    //nie wiem co tutaj
-  }
+  //TAK SAMO TUTAJ
+  //Nie mam zielonego pojęcia jak technicznie masz sprawdzać
+  //historię danego wypożyczenia.
+  //sprawdzHistorie() {
+  //nie wiem co tutaj
+  //}
 }

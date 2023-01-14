@@ -1,29 +1,24 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import Klient from 'src/klient/klient.entity';
 import Samochod from 'src/samochod/samochod.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
 
 @Entity()
 class Wypozyczenie {
   @PrimaryGeneratedColumn()
-  public nr_wyp: number;
+  public nr_wyp: number; //zmiana z private na public
 
-  @Column()
-  public samochod: Samochod;
+  @Column() //zamiast typu samochod bedzie id samochodu
+  public id_samochodu: number;
 
   @Column()
   public data_wypozyczenia: Date;
 
   @Column()
-  public przez_kogo: Klient;
+  public data_zwrotu: Date;
 
-  /* cos mi tu nie wychodzi xd zmienilem nr_wyp na public, bo w service mialem błędy
-  public sprawdzID(id: number) {
-    //lepiej chyba wyszukiwac wypozyczenie przez numer a nie samochod
-    if (id == this.nr_wyp) {
-      return this.nr_wyp;
-    } else return -1;
-  }
-  */
+  @Column() //zamiast typu klient bedzie id klienta
+  public id_klienta: number;
 }
 
 export default Wypozyczenie;

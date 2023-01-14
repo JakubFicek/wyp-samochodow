@@ -2,10 +2,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { stringify } from 'querystring';
 import Samochod from 'src/samochod/samochod.entity';
-import { Repository } from 'typeorm';
+import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
+import { Column, Repository } from 'typeorm';
 import { edytujKlientDto } from './dto/edytujKlient.dto';
 import { KlientDto } from './dto/klient.dto';
 import Klient from './klient.entity';
+import WypozyczenieService from 'src/wypozyczenie/wypozyczenie.service';
 
 @Injectable()
 export default class KlientService {
@@ -34,4 +36,6 @@ export default class KlientService {
     const klient = await this.klientRepository.findOne({ where: { id } });
     return klient.weryfikacjaDanych();
   }
+
+  async historiaKlienta(id: number) {}
 }
