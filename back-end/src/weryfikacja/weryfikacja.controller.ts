@@ -1,4 +1,4 @@
-import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, Get } from '@nestjs/common';
+import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, Get, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import RequestKlienta from 'src/typy/requestKlienta.interface';
 import RegisterDto from './dto/register.dto';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
@@ -6,6 +6,7 @@ import { LocalAuthenticationGuard } from './guards/localWeryfikacja.guard';
 import { WeryfikacjaService } from './weryfikacja.service';
  
 @Controller('weryfikacja')
+@UseInterceptors(ClassSerializerInterceptor)
 export class WeryfikacjaController {
   constructor(
     private readonly weryfikacjaService: WeryfikacjaService

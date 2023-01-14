@@ -1,5 +1,4 @@
-import { string } from '@hapi/joi';
-import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
+import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -14,9 +13,11 @@ class Klient {
   public nazwisko: string;
 
   @Column()
+  @Exclude()
   private pesel: string;
 
   @Column()
+  @Exclude()
   public haslo: string;
 
   @Column()
