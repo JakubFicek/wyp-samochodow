@@ -14,6 +14,8 @@ export default class KlientService {
   constructor(
     @InjectRepository(Klient)
     private klientRepository: Repository<Klient>,
+    @InjectRepository(Wypozyczenie)
+    private wypozyczenieRepository: Repository<Wypozyczenie>,
   ) {}
 
   wybierzDate() {
@@ -50,7 +52,13 @@ export default class KlientService {
     const klient = await this.klientRepository.findOne({ where: { id } });
     return klient.weryfikacjaDanych();
   }
-
+  
+  async historiaKlienta(id_klienta: number) {
+    const wypozyczenie = await this.wypozyczenieRepository.find({
+      where: { id_klienta },
+    });
+  }
+  
   async getById(id: number) {
     const klient = await this.klientRepository.findOne({where: {id}});
     if (klient) {
@@ -58,6 +66,4 @@ export default class KlientService {
     }
     throw new HttpException('Klient o tym id nie istnieje', HttpStatus.NOT_FOUND);
   }
-
-  async historiaKlienta(id: number) {}
 }

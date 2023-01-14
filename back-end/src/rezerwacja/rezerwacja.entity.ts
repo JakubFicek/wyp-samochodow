@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
 
 @Entity()
-class Wypozyczenie {
+class Rezerwacja {
   @PrimaryGeneratedColumn()
-  public nr_wyp: number; //zmiana z private na public
+  public nr_rez: number;
 
-  @Column() //zamiast typu samochod bedzie id samochodu
+  @Column()
   public id_samochodu: number;
 
   @Column()
@@ -14,8 +14,8 @@ class Wypozyczenie {
   @Column()
   public data_zwrotu: Date;
 
-  @Column() //zamiast typu klient bedzie id klienta
+  @Column()
   public id_klienta: number;
 }
 
-export default Wypozyczenie;
+export default Rezerwacja;
