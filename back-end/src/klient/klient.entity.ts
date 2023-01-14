@@ -1,10 +1,11 @@
+import { string } from '@hapi/joi';
 import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class Klient {
   @PrimaryGeneratedColumn()
-  public id: number; //Chyba musimy dodać tu id rozrozniajace klientow
+  public id: number;
 
   @Column()
   public imie: string;
@@ -16,13 +17,16 @@ class Klient {
   private pesel: string;
 
   @Column()
+  public haslo: string;
+
+  @Column()
   private czy_jest_prawo_jazdy: boolean;
 
   @Column()
   private wiek: number;
 
-  @Column()
-  private email: string;
+  @Column({ unique: true })
+  public email: string;
 
   @Column()
   public historia: string;

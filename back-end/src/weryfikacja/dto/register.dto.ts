@@ -1,4 +1,4 @@
-export class KlientDto {
+export class RegisterDto {
   imie: string;
   nazwisko: string;
   haslo: string;
@@ -7,3 +7,5 @@ export class KlientDto {
   wiek: number;
   email: string;
 }
+
+export default RegisterDto;
