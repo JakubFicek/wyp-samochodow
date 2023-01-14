@@ -1,3 +1,4 @@
+import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -22,6 +23,9 @@ class Klient {
 
   @Column()
   private email: string;
+
+  @Column()
+  public historia: string;
 
   weryfikacjaDanych() {
     //zeby wypozyczyc musi miec 21 lat, prawo jazdy oraz podany pesel i poprawny mail
