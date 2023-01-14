@@ -1,8 +1,8 @@
 import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, Get, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
-import RequestKlienta from 'src/typy/requestKlienta.interface';
+import { RequestWithUser } from 'src/typy/requestWithUserinterface';
 import RegisterDto from './dto/register.dto';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
-import { LocalAuthenticationGuard } from './guards/localWeryfikacja.guard';
+import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
 import { WeryfikacjaService } from './weryfikacja.service';
  
 @Controller('weryfikacja')
@@ -19,8 +19,8 @@ export class WeryfikacjaController {
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
-  @Post("log-in")
-  LogIn(@Req() request: RequestKlienta) {
+  @Post("login")
+  LogIn(@Req() request: RequestWithUser) {
     const { klient } = request;  
     const cookie = this.weryfikacjaService.getCookieWithJwtToken(klient.id);
     request.res.setHeader("Set-Cookie", cookie);
@@ -30,14 +30,14 @@ export class WeryfikacjaController {
   @UseGuards(JwtAuthenticationGuard)
   @Post('log-out')
   @HttpCode(200)
-  async logOut(@Req() request: RequestKlienta) {
+  async logOut(@Req() request: RequestWithUser) {
     request.res.setHeader('Set-Cookie', this.weryfikacjaService.getCookieForLogOut());
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @Get()
-  authenticate(@Req() request: RequestKlienta) {
-    const klient = request.klient;
+  authenticate(@Req() request: RequestWithUser) {
+    const klient = request.user;
     return klient;
   }
 }

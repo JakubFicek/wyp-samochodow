@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 class Klient {
   @PrimaryGeneratedColumn()
-  public id: number;
+  public id?: number;
 
   @Column()
   public imie: string;
@@ -28,9 +28,6 @@ class Klient {
 
   @Column({ unique: true })
   public email: string;
-
-  @Column()
-  public historia: string;
 
   weryfikacjaDanych() {
     //zeby wypozyczyc musi miec 21 lat, prawo jazdy oraz podany pesel i poprawny mail

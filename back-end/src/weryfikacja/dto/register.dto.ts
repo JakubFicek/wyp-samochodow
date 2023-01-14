@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
 
 export class RegisterDto {
   @IsString()
@@ -22,7 +22,7 @@ export class RegisterDto {
   @IsNotEmpty()
   czy_jest_prawo_jazdy: boolean;
   
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   wiek: number;
   
