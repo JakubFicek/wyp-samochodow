@@ -1,11 +1,13 @@
 import KlientService from "src/klient/klient.service";
 import RegisterDto from "./dto/register.dto";
 import * as bcrypt from 'bcrypt';
-import { HttpException, HttpStatus } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import PostgresErrorCode from "src/bazadanych/postgresErrorCode.enum";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
+import { TokenPayload } from "src/typy/tokenPayload.interface";
 
+@Injectable()
 export class WeryfikacjaService {
   constructor(
     private readonly klientService: KlientService,
@@ -20,7 +22,6 @@ export class WeryfikacjaService {
           ...daneZakladaniaKonta,
           haslo: hashedHaslo
         });
-        nowyKlient.haslo = undefined;
         return nowyKlient;
       } catch (error) {
         if (error?.code === PostgresErrorCode.UniqueViolation) {
@@ -30,33 +31,33 @@ export class WeryfikacjaService {
       }
     }
     
-    public async getAuthenticatedUser(email: string, podaneHaslo: string) {
-        try {
-          const klient = await this.klientService.getByEmail(email);
-          await this.verifyPassword(podaneHaslo, klient.haslo);
+    public async potwierdzKlienta(email: string, hashedPass: string) {
+      try {
+          const klient = await this.klientService.znajdzPoEmailu(email);
+          await this.zweryfikujHaslo(klient.haslo, hashedPass);
           return klient;
-        } catch (error) {
-          throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-        }
+      } catch (error) {
+          throw new HttpException("Zle dane. ", HttpStatus.BAD_REQUEST);
       }
+  }
     
-    private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
-      const isPasswordMatching = await bcrypt.compare(
-        plainTextPassword,
-        hashedPassword
+    private async zweryfikujHaslo(plainTextPassword: string, hashedPassword: string) {
+      const czySieZgadza = await bcrypt.compare(
+        hashedPassword,
+        plainTextPassword
       );
-      if (!isPasswordMatching) {
-        throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+      if (!czySieZgadza) {
+        throw new HttpException('Zle dane wprowadzone', HttpStatus.BAD_REQUEST);
       }
     }
 
-    public getCookieWithJwtToken(klientId: number) {
-      const payload: TokenPayload = { klientId };
+    public wezCookieZJwtToken(klientId: number) {
+      const payload: TokenPayload = {klientId};
       const token = this.jwtService.sign(payload);
       return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
     }
 
-    public getCookieForLogOut() {
+    public wezCookiePoWylogowaniu() {
         return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
     }
 }

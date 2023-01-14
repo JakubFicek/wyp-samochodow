@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import KlientService from 'src/klient/klient.service';
+import { TokenPayload } from 'src/typy/tokenPayload.interface';
  
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -20,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
  
   async validate(payload: TokenPayload) {
-    return this.klientService.getById(payload.klientId);
+    return this.klientService.znajdzPoId(payload.klientId);
   }
 }

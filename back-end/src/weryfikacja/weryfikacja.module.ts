@@ -10,9 +10,9 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
-    KlientModule,
     PassportModule,
     ConfigModule,
+    KlientModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { BazaDanychModule } from './bazadanych/bazadanych.module';
 import { KlientModule } from './klient/klient.module';
 import { SamochodModule } from './samochod/samochod.module';
+import { WeryfikacjaModule } from './weryfikacja/weryfikacja.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SamochodModule } from './samochod/samochod.module';
       }),
     }),
     BazaDanychModule,
+    WeryfikacjaModule
   ],
   controllers: [],
   providers: [],

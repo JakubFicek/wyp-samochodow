@@ -1,42 +1,43 @@
-import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, Get } from '@nestjs/common';
-import RequestKlienta from 'src/typy/requestKlienta.interface';
+import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, Get, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { RequestKlient } from 'src/typy/requestKlient.interface';
 import RegisterDto from './dto/register.dto';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
-import { LocalAuthenticationGuard } from './guards/localWeryfikacja.guard';
+import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
 import { WeryfikacjaService } from './weryfikacja.service';
  
 @Controller('weryfikacja')
+@UseInterceptors(ClassSerializerInterceptor)
 export class WeryfikacjaController {
   constructor(
     private readonly weryfikacjaService: WeryfikacjaService
   ) {}
  
   @Post('register')
-  async register(@Body() registrationData: RegisterDto) {
-    return this.weryfikacjaService.register(registrationData);
+  async register(@Body() daneNowegoKonta: RegisterDto) {
+    return this.weryfikacjaService.register(daneNowegoKonta);
   }
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
-  @Post("log-in")
-  LogIn(@Req() request: RequestKlienta) {
+  @Post("login")
+  LogIn(@Req() request: RequestKlient) {
     const { klient } = request;  
-    const cookie = this.weryfikacjaService.getCookieWithJwtToken(klient.id);
+    const cookie = this.weryfikacjaService.wezCookieZJwtToken(klient.id);
     request.res.setHeader("Set-Cookie", cookie);
     return klient;
   }
-
+  //Przy testowaniu i fetchowaniu, trzeba pamietac ze nie ma email i haslo, tylko jest email i password.
   @UseGuards(JwtAuthenticationGuard)
   @Post('log-out')
   @HttpCode(200)
-  async logOut(@Req() request: RequestKlienta) {
-    request.res.setHeader('Set-Cookie', this.weryfikacjaService.getCookieForLogOut());
+  async logOut(@Req() request: RequestKlient) {
+    request.res.setHeader('Set-Cookie', this.weryfikacjaService.wezCookiePoWylogowaniu());
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @Get()
-  authenticate(@Req() request: RequestKlienta) {
-    const klient = request.klient;
+  zeryfikuj(@Req() request: RequestKlient) {
+    const klient = request.user;
     return klient;
   }
 }

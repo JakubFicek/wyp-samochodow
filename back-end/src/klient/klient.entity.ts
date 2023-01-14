@@ -1,11 +1,10 @@
-import { string } from '@hapi/joi';
-import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
+import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class Klient {
   @PrimaryGeneratedColumn()
-  public id: number;
+  public id?: number;
 
   @Column()
   public imie: string;
@@ -14,9 +13,11 @@ class Klient {
   public nazwisko: string;
 
   @Column()
+  @Exclude()
   private pesel: string;
 
   @Column()
+  @Exclude()
   public haslo: string;
 
   @Column()
@@ -27,9 +28,6 @@ class Klient {
 
   @Column({ unique: true })
   public email: string;
-
-  @Column()
-  public historia: string;
 
   weryfikacjaDanych() {
     //zeby wypozyczyc musi miec 21 lat, prawo jazdy oraz podany pesel i poprawny mail
