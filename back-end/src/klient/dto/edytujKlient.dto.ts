@@ -1,4 +1,5 @@
 export class edytujKlientDto {
+  id?: number;
   imie?: string;
   nazwisko?: string;
   pesel?: string;
