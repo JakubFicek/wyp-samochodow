@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { BazaDanychModule } from './bazadanych/bazadanych.module';
 import { KlientModule } from './klient/klient.module';
+import { PracownicyModule } from './pracownicy/pracownicy.module';
 import { SamochodModule } from './samochod/samochod.module';
 import { WeryfikacjaModule } from './weryfikacja/weryfikacja.module';
 
@@ -23,7 +24,8 @@ import { WeryfikacjaModule } from './weryfikacja/weryfikacja.module';
       }),
     }),
     BazaDanychModule,
-    WeryfikacjaModule
+    WeryfikacjaModule,
+    PracownicyModule
   ],
   controllers: [],
   providers: [],

@@ -48,22 +48,22 @@ export default class SamochodService {
 
   async zwrotDoPrzegladu(id: number, samochod: edytujSamochodDto) {
     await this.samochodRepository.update(id, samochod);
-    const updatedPost = await this.samochodRepository.findOne({
+    const nowySamochod = await this.samochodRepository.findOne({
       where: { id },
     });
-    if (updatedPost) {
-      return updatedPost;
+    if (nowySamochod) {
+      return nowySamochod;
     }
     throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
   }
 
   async zmienStan(id: number, samochod: edytujSamochodDto) {
     await this.samochodRepository.update(id, samochod);
-    const updatedPost = await this.samochodRepository.findOne({
+    const nowySamochod = await this.samochodRepository.findOne({
       where: { id },
     });
-    if (updatedPost) {
-      return updatedPost;
+    if (nowySamochod) {
+      return nowySamochod;
     }
     throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
   }
@@ -72,11 +72,11 @@ export default class SamochodService {
     const sam = await this.samochodRepository.findOne({ where: { id } });
     sam.dodajWpis(nowyWpis.wpis);
     await this.samochodRepository.update(id, sam);
-    const updatedPost = await this.samochodRepository.findOne({
+    const zaaktualizowanyWpis = await this.samochodRepository.findOne({
       where: { id },
     });
-    if (updatedPost) {
-      return updatedPost;
+    if (zaaktualizowanyWpis) {
+      return zaaktualizowanyWpis;
     }
     throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
   }
