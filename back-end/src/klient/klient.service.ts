@@ -40,7 +40,7 @@ export default class KlientService {
     return nowyKlient;
   }
 
-  async findUserByEmail(email: string) {
+  async znajdzPoEmailu(email: string) {
     const user = await this.klientRepository.findOne({ where: { email } })
     if(user) return user;
     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -58,7 +58,7 @@ export default class KlientService {
     return wypozyczenia;
   }
   
-  async getById(id: number) {
+  async znajdzPoId(id: number) {
     const klient = await this.klientRepository.findOne({where: {id}});
     if (klient) {
       return klient;

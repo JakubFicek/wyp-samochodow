@@ -31,33 +31,33 @@ export class WeryfikacjaService {
       }
     }
     
-    public async getConfirmedUser(email: string, hashedPass: string) {
+    public async potwierdzKlienta(email: string, hashedPass: string) {
       try {
-          const klient = await this.klientService.findUserByEmail(email);
-          await this.verifyPassword(klient.haslo, hashedPass);
+          const klient = await this.klientService.znajdzPoEmailu(email);
+          await this.zweryfikujHaslo(klient.haslo, hashedPass);
           return klient;
       } catch (error) {
-          throw new HttpException("WRONG CREDENTIALS PROVIDED. ", HttpStatus.BAD_REQUEST);
+          throw new HttpException("Zle dane. ", HttpStatus.BAD_REQUEST);
       }
   }
     
-    private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
-      const isPasswordMatching = await bcrypt.compare(
+    private async zweryfikujHaslo(plainTextPassword: string, hashedPassword: string) {
+      const czySieZgadza = await bcrypt.compare(
         hashedPassword,
         plainTextPassword
       );
-      if (!isPasswordMatching) {
-        throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+      if (!czySieZgadza) {
+        throw new HttpException('Zle dane wprowadzone', HttpStatus.BAD_REQUEST);
       }
     }
 
-    public getCookieWithJwtToken(klientId: number) {
+    public wezCookieZJwtToken(klientId: number) {
       const payload: TokenPayload = {klientId};
       const token = this.jwtService.sign(payload);
       return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
     }
 
-    public getCookieForLogOut() {
+    public wezCookiePoWylogowaniu() {
         return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
     }
 }
