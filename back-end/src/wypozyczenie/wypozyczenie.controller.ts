@@ -20,4 +20,14 @@ export default class WypozyczenieController {
   async znajdzWypozyczenie(@Param('id') id: string) {
     return this.wypozyczenieSerive.znajdzWypozyczenie(Number(id));
   }
+
+  @Post()
+  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto) {
+    return this.wypozyczenieSerive.stworzWypozyczenie(wypozyczenie);
+  }
+
+  @Delete(':id')
+  async usunWypozyczenie(@Param('id') id: string) {
+    return this.wypozyczenieSerive.usunWypozyczenie(Number(id));
+  }
 }
