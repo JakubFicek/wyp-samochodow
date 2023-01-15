@@ -1,5 +1,5 @@
+import { Exclude } from "class-transformer";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import Rola from "../enum/role.enum";
 
 @Entity()
 export class Pracownik {
@@ -16,12 +16,18 @@ export class Pracownik {
   public email: string;
 
   @Column()
+  @Exclude()
+  public haslo: string;
+
+  @Column()
   private typ_umowy: string;
     
   @Column()
+  @Exclude()
   private data_zatrudnienia: string;
     
   @Column()
+  @Exclude()
   private wynagrodzenie: number;
 
   @Column()

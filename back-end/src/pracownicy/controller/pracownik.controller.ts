@@ -12,16 +12,15 @@ export default class PracownikController {
     return this.pracownikService.dodaj_pracownika(daneNowegoPracownika);
   }
 
-  @Patch(':id')
+  @Patch('edytuj')
   async edytuj_pracownika(
-    @Param('id') id: string,
     @Body() noweDane: EdytujPracownikaDto,
   ) {
-    return this.pracownikService.edytuj_pracownika(Number(id), noweDane);
+    return this.pracownikService.edytuj_pracownika(noweDane.email, noweDane);
   }
 
-  @Delete(':id')
-  async usun_samochod(@Param('id') id: string) {
-    return this.pracownikService.usun_pracownika(Number(id));
+  @Delete('delete')
+  async usun_samochod(@Body() email: string) {
+    return this.pracownikService.usun_pracownika(email);
   }
 }

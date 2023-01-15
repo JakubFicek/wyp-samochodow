@@ -36,32 +36,38 @@ export default class PracownikService {
         await this.administratorRepository.save(nowyAdministratorDoBD);
         return nowyAdministratorDoBD;
       } else {
-        throw new Error("Administrator juz istnieje!!")
+        throw new HttpException("Administrator juz istnieje!!", HttpStatus.CONFLICT)
       }
     }
   }
 
-  async edytuj_pracownika(id: number, noweDane: EdytujPracownikaDto){
-    await this.sprzedawcaRepository.update(id, noweDane);
+  async edytuj_pracownika(email: string, noweDane: EdytujPracownikaDto){
     const edytowanyPracownik = await this.sprzedawcaRepository.findOne({
-      where: { id },
+      where: { email },
     });
+    await this.sprzedawcaRepository.update(edytowanyPracownik.id, noweDane);
     if (edytowanyPracownik) {
-      return edytowanyPracownik;
-    } else {
-      await this.serwisantRepository.update(id, noweDane);
-      const edytowanyPracownik = await this.serwisantRepository.findOne({
-        where: { id },
+      return await this.sprzedawcaRepository.findOne({
+        where: { email },
       });
+    } else {
+      const edytowanyPracownik = await this.serwisantRepository.findOne({
+        where: { email },
+      });
+      await this.serwisantRepository.update(edytowanyPracownik.id, noweDane);
       if (edytowanyPracownik) {
-        return edytowanyPracownik;
-      } else {
-        await this.administratorRepository.update(id, noweDane);
-        const edytowanyPracownik = await this.administratorRepository.findOne({
-          where: { id },
+        return await this.serwisantRepository.findOne({
+          where: { email },
         });
+      } else {
+        const edytowanyPracownik = await this.administratorRepository.findOne({
+          where: { email },
+        });
+        await this.administratorRepository.update(edytowanyPracownik.id, noweDane);
         if (edytowanyPracownik) {
-          return edytowanyPracownik;
+          return await this.administratorRepository.findOne({
+            where: { email },
+          });
         } else {
           throw new HttpException('Nie znaleziono pracownika', HttpStatus.NOT_FOUND);
         }
@@ -69,10 +75,10 @@ export default class PracownikService {
     }
   }
 
-  async usun_pracownika(id: number){
-    const deleteResponse = await this.sprzedawcaRepository.delete(id);
+  async usun_pracownika(email: string){
+    const deleteResponse = await this.sprzedawcaRepository.delete(email);
     if (!deleteResponse.affected) {
-      const deleteResponse = await this.serwisantRepository.delete(id);
+      const deleteResponse = await this.serwisantRepository.delete(email);
       if (!deleteResponse.affected) {
         throw new HttpException('Nie znaleziono pracownika o tym id', HttpStatus.NOT_FOUND);
       }
