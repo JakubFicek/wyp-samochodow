@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import Email from "src/typy/email.interface";
 import EdytujPracownikaDto from "../dto/edytujPracownika.dto";
 import NowyPracownikDto from "../dto/nowyPracownik.dto";
 import Rola from "../enum/role.enum";

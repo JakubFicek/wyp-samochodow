@@ -8,6 +8,7 @@ import { Serwisant } from "../entity/serwisant.entity";
 import { Sprzedawca } from "../entity/sprzedawca.entity";
 import Rola from "../enum/role.enum";
 import * as bcrypt from 'bcrypt';
+import Email from "src/typy/email.interface";
 
 @Injectable()
 export default class PracownikService {
@@ -75,7 +76,7 @@ export default class PracownikService {
     }
   }
 
-  async znajdzPoEmailu(email:string) {
+  async znajdzPoEmailu(email: string) {
     const szukany = await this.sprzedawcaRepository.findOne({where: {email}});
     if (szukany) {
       return szukany;

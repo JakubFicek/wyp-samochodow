@@ -50,7 +50,7 @@ export class WeryfikacjaController {
 
   @UseGuards(JwtAuthenticationGuard)
   @Get()
-  zeryfikuj(@Req() request: RequestWithUser) {
+  zweryfikuj(@Req() request: RequestWithUser) {
     const klient = request.user;
     return klient;
   }
@@ -64,7 +64,7 @@ export class WeryfikacjaController {
 
   @UseGuards(JwtAuthenticationGuardPracownik)
   @Get("pracownik")
-  zeryfikujPracownika(@Req() request: RequestPracownik) {
+  zweryfikujPracownika(@Req() request: RequestPracownik) {
     const pracownik = request.user;
     return pracownik;
   }
