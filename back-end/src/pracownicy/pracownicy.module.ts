@@ -14,6 +14,7 @@ import PracownikService from "./service/pracownik.service";
   ],
   controllers: [PracownikController],
   providers: [PracownikService],
+  exports: [PracownikService]
 })
   
 export class PracownicyModule {}
