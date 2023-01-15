@@ -41,6 +41,7 @@ export default class SamochodController {
   }
 
   @Patch('zwrot/:id')
+  @UseGuards(RoleGuard(Rola.Sprzedawca))
   async zwrotDoPrzegladu(
     @Param('id') id: string,
     @Body() samochod: edytujSamochodDto,
@@ -57,6 +58,7 @@ export default class SamochodController {
   }
 
   @Patch('ksiazka/:id')
+  @UseGuards(RoleGuard(Rola.Serwisant))
   async edytujKsiazkeSerwisowa(
     @Param('id') id: string,
     @Body() nowyWpis: wpis,
