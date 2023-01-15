@@ -1,0 +1,68 @@
+.login {
+    position: relative;
+    text-align: center;
+    width: 400px;
+    margin: auto;
+}
+
+.login p {
+    padding-bottom: 20px;
+    font-size: 20px;
+}
+
+.mantine-TextInput-root {
+    text-align: left;
+    padding-bottom:10px;
+}
+
+.mantine-TextInput-label {
+    color:rgb(230, 226, 234);
+}
+.containerLogowanie {
+    text-align: center;
+    display: block;
+}
+
+.containerLogowanie h1 {
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
+
+.containerLogowanie p{  
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
+
+.signin {
+    text-align: center;
+    width: 400px;
+    margin: auto;
+    padding-bottom: 90px;
+}
+
+.signin p {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+.mantine-Button-root {
+    margin-bottom: 10 px;
+}
+
+.mantine-Alert-root {
+    background-color: rgb(55, 40, 73);
+    color: red;
+    text-align: left;
+}
+
+.mantine-Alert-message {
+    color: red;
+    font-family: Calibri;
+}
+
+.mantine-Alert-wrapper {
+    border: 2px solid red;
+    border-radius: 5px;
+    padding: 10px
+}
