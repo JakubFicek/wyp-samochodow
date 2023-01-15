@@ -29,4 +29,12 @@ export default class RezerwacjaService {
       );
     }
   }
+
+  async znajdzRezerwacje(nr_rez: number) {
+    const rez = await this.rezerwacjaRepository.findOne({ where: { nr_rez } });
+    if (rez) {
+      return rez;
+    }
+    throw new HttpException('Nie znaleziono rezerwacji', HttpStatus.NOT_FOUND);
+  }
 }

@@ -17,9 +17,13 @@ export default class RezerwacjaController {
   constructor(private readonly rezerwacjaService: RezerwacjaService) {}
 
   //@Get('znajdz/:id') znajdz rezerwacje - potem zrobic
+  @Get('znajdz/:id')
+  async znajdzRezerwacje(@Param() id: string) {
+    return this.rezerwacjaService.znajdzRezerwacje(Number(id));
+  }
 
-  @Post()
-  async stworzRezerwacje(rezerwacja: RezerwacjaDto) {
+  @Post('create')
+  async stworzRezerwacje(@Body() rezerwacja: RezerwacjaDto) {
     return this.rezerwacjaService.stworzRezerwacje(rezerwacja);
   }
 
