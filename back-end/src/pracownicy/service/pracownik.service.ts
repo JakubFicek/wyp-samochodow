@@ -88,7 +88,7 @@ export default class PracownikService {
         if(szukany){
           return szukany;
         } else {
-            throw new HttpException('Nie znaleziono pracownika o tym id', HttpStatus.NOT_FOUND);
+            throw new HttpException('Nie znaleziono pracownika o tym emailu', HttpStatus.NOT_FOUND);
         }
       }
     }

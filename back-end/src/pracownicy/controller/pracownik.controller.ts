@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import EdytujPracownikaDto from "../dto/edytujPracownika.dto";
 import NowyPracownikDto from "../dto/nowyPracownik.dto";
+import Rola from "../enum/role.enum";
+import RoleGuard from "../guard/role.guard";
 import PracownikService from "../service/pracownik.service";
 
 @Controller('pracownik')
@@ -8,11 +10,13 @@ export default class PracownikController {
   constructor(private readonly pracownikService: PracownikService){ } 
 
   @Post('create')
+  @UseGuards(RoleGuard(Rola.Administrator))
   async dodaj_pracownika(@Body() daneNowegoPracownika: NowyPracownikDto) {
     return this.pracownikService.dodaj_pracownika(daneNowegoPracownika);
   }
 
   @Patch(':id')
+  @UseGuards(RoleGuard(Rola.Administrator))
   async edytuj_pracownika(
     @Param('id') id: string,
     @Body() noweDane: EdytujPracownikaDto,
@@ -21,7 +25,8 @@ export default class PracownikController {
   }
 
   @Delete(':id')
-  async usun_samochod(@Param('id') id: string) {
+  @UseGuards(RoleGuard(Rola.Administrator))
+  async usun_pracownika(@Param('id') id: string) {
     return this.pracownikService.usun_pracownika(Number(id));
   }
 }
