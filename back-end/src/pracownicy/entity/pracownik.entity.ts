@@ -4,7 +4,10 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Pracownik {
   @PrimaryGeneratedColumn()
-  public id?: number;
+  public id_w_konkretnej_bd?: number;
+  
+  @Column({unique: true})
+  public id: number;
 
   @Column()
   public imie: string;
@@ -33,3 +36,5 @@ export class Pracownik {
   @Column()
   public rola: string;
 }
+
+export default Pracownik;

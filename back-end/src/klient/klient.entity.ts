@@ -2,7 +2,7 @@ import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-class Klient {
+export class Klient {
   @PrimaryGeneratedColumn()
   public id?: number;
 

@@ -1,25 +1,33 @@
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
-import EdytujPracownikaDto from '../dto/edytujPracownika.dto';
-import NowyPracownikDto from '../dto/nowyPracownik.dto';
-import PracownikService from '../service/pracownik.service';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import Email from "src/typy/email.interface";
+import EdytujPracownikaDto from "../dto/edytujPracownika.dto";
+import NowyPracownikDto from "../dto/nowyPracownik.dto";
+import Rola from "../enum/role.enum";
+import RoleGuard from "../guard/role.guard";
+import PracownikService from "../service/pracownik.service";
 
 @Controller('pracownik')
 export default class PracownikController {
   constructor(private readonly pracownikService: PracownikService) {}
 
   @Post('create')
+  @UseGuards(RoleGuard(Rola.Administrator))
   async dodaj_pracownika(@Body() daneNowegoPracownika: NowyPracownikDto) {
     return this.pracownikService.dodaj_pracownika(daneNowegoPracownika);
   }
 
-  @Patch('edytuj')
-  async edytuj_pracownika(@Body() noweDane: EdytujPracownikaDto) {
-    return this.pracownikService.edytuj_pracownika(noweDane.email, noweDane);
+  @Patch(':id')
+  @UseGuards(RoleGuard(Rola.Administrator))
+  async edytuj_pracownika(
+    @Param('id') id: string,
+    @Body() noweDane: EdytujPracownikaDto,
+  ) {
+    return this.pracownikService.edytuj_pracownika(Number(id), noweDane);
   }
 
-  @Delete('delete')
-  async usun_pracownika(@Body() email: string) {
-    //nazywalo sie usun_samochod
-    return this.pracownikService.usun_pracownika(email);
+  @Delete(':id')
+  @UseGuards(RoleGuard(Rola.Administrator))
+  async usun_pracownika(@Param('id') id: string) {
+    return this.pracownikService.usun_pracownika(Number(id));
   }
 }

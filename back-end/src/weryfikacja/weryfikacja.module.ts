@@ -7,12 +7,16 @@ import { WeryfikacjaController } from './weryfikacja.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { PracownicyModule } from 'src/pracownicy/pracownicy.module';
+import { LocalPracownikStrategy } from './strategy/localPracownik.strategy';
+import { JwtStrategyPracownik } from './strategy/jwtPracownik.strategy';
 
 @Module({
   imports: [
     PassportModule,
     ConfigModule,
     KlientModule,
+    PracownicyModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,7 +28,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
       }),
     }),
   ],
-  providers: [WeryfikacjaService, LocalStrategy, JwtStrategy],
+  providers: [WeryfikacjaService, LocalStrategy, JwtStrategy, LocalPracownikStrategy, JwtStrategyPracownik],
   controllers: [WeryfikacjaController]
 })
 export class WeryfikacjaModule {}
