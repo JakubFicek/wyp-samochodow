@@ -8,7 +8,7 @@ import PracownikService from "../service/pracownik.service";
 
 @Controller('pracownik')
 export default class PracownikController {
-  constructor(private readonly pracownikService: PracownikService){ } 
+  constructor(private readonly pracownikService: PracownikService) {}
 
   @Post('create')
   @UseGuards(RoleGuard(Rola.Administrator))

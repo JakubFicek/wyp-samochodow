@@ -6,6 +6,9 @@ import { KlientModule } from './klient/klient.module';
 import { PracownicyModule } from './pracownicy/pracownicy.module';
 import { SamochodModule } from './samochod/samochod.module';
 import { WeryfikacjaModule } from './weryfikacja/weryfikacja.module';
+import { WypozyczenieModule } from './wypozyczenie/wypozyczenie.module';
+import { RezerwacjaModule } from './rezerwacja/rezerwacja.module';
+import { RaportModule } from './raport/raport.module';
 
 @Module({
   imports: [
@@ -25,7 +28,10 @@ import { WeryfikacjaModule } from './weryfikacja/weryfikacja.module';
     }),
     BazaDanychModule,
     WeryfikacjaModule,
-    PracownicyModule
+    PracownicyModule,
+    WypozyczenieModule,
+    RezerwacjaModule,
+    RaportModule,
   ],
   controllers: [],
   providers: [],

@@ -16,6 +16,9 @@ class Wypozyczenie {
 
   @Column() //zamiast typu klient bedzie id klienta
   public id_klienta: number;
+
+  @Column() //dodana kolumna
+  public cena_wypozyczenia?: number;
 }
 
 export default Wypozyczenie;

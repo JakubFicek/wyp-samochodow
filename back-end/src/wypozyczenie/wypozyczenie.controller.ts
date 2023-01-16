@@ -21,8 +21,8 @@ export default class WypozyczenieController {
     return this.wypozyczenieSerive.znajdzWypozyczenie(Number(id));
   }
 
-  @Post()
-  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto) {
+  @Post('create')
+  async stworzWypozyczenie(@Body() wypozyczenie: WypozyczenieDto) {
     return this.wypozyczenieSerive.stworzWypozyczenie(wypozyczenie);
   }
 
