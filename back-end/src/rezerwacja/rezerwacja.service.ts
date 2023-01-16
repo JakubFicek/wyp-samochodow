@@ -63,7 +63,7 @@ export default class RezerwacjaService {
     const samochod = await this.samochodRepository.findOne({
       where: { id: rezerwacja.id_samochodu },
     });
-    //dodajemy termin przez index 0 -> data_wyp i index 1 -> data_odd
+    //usuwamy termin przez index 0 -> data_wyp i index 1 -> data_odd
     const warunek = (element: Date[]) =>
       (element = [rezerwacja.data_wypozyczenia, rezerwacja.data_zwrotu]);
     const index = samochod.zajete_terminy.findIndex(warunek);

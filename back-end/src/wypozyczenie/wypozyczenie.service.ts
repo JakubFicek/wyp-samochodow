@@ -37,12 +37,30 @@ export default class WypozyczenieService {
     const d2 = new Date(wypozyczenie.data_zwrotu);
     //format wpisania: RRRR-MM-DDTHH:MM:SSZ
 
-    const dateDiffInDays =
-      Math.abs(d1.getTime() - d2.getTime()) / (1000 * 3600 * 24);
-
-    const samochod = this.samochodRepository.findOne({
+    const samochod = await this.samochodRepository.findOne({
       where: { id: wypozyczenie.id_samochodu },
     });
+
+    for (let i in samochod.zajete_terminy) {
+      let dateW = samochod.zajete_terminy[i][0].getTime();
+      let dateO = samochod.zajete_terminy[i][1].getTime();
+      if (
+        (new Date(wypozyczenie.data_wypozyczenia).getTime() < dateW &&
+          new Date(wypozyczenie.data_zwrotu).getTime() < dateW) ||
+        (new Date(wypozyczenie.data_wypozyczenia).getTime() > dateO &&
+          new Date(wypozyczenie.data_zwrotu).getTime() > dateO)
+      ) {
+        //jesli tak, to samochod jest dostepny
+        return samochod;
+      }
+      throw new HttpException(
+        'Samochod nie jest dostepny w tym terminie',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const dateDiffInDays =
+      Math.abs(d1.getTime() - d2.getTime()) / (1000 * 3600 * 24);
 
     wypozyczenie.cena_wypozyczenia = Math.ceil(
       dateDiffInDays * (await samochod).cena_za_dzien,
@@ -56,6 +74,15 @@ export default class WypozyczenieService {
   }
 
   async usunWypozyczenie(nr_wyp: number) {
+    const wypozyczenie = await this.znajdzWypozyczenie(nr_wyp);
+    const samochod = await this.samochodRepository.findOne({
+      where: { id: wypozyczenie.id_samochodu },
+    });
+    //usuwamy termin przez index 0 -> data_wyp i index 1 -> data_odd
+    const warunek = (element: Date[]) =>
+      (element = [wypozyczenie.data_wypozyczenia, wypozyczenie.data_zwrotu]);
+    const index = samochod.zajete_terminy.findIndex(warunek);
+    samochod.zajete_terminy.splice(index, 1);
     const deleteResponse = await this.wypozyczenieRepository.delete(nr_wyp);
     if (!deleteResponse.affected) {
       throw new HttpException(

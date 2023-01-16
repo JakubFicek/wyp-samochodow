@@ -1,10 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import Email from "src/typy/email.interface";
-import EdytujPracownikaDto from "../dto/edytujPracownika.dto";
-import NowyPracownikDto from "../dto/nowyPracownik.dto";
-import Rola from "../enum/role.enum";
-import RoleGuard from "../guard/role.guard";
-import PracownikService from "../service/pracownik.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import Email from 'src/typy/email.interface';
+import EdytujPracownikaDto from '../dto/edytujPracownika.dto';
+import NowyPracownikDto from '../dto/nowyPracownik.dto';
+import Rola from '../enum/role.enum';
+import RoleGuard from '../guard/role.guard';
+import PracownikService from '../service/pracownik.service';
 
 @Controller('pracownik')
 export default class PracownikController {
