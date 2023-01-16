@@ -9,4 +9,5 @@ export class edytujSamochodDto {
   stan_pojazdu?: string;
   ksiazka_serwisowa?: string;
   czy_sprawdzony?: boolean;
+  zajete_terminy?: Date[][];
 }
