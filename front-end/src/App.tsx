@@ -4,6 +4,8 @@ import { HomePage } from './Components/HomePage';
 import { Logowanie } from './Components/Logowanie';
 import { Rejestrowanie } from './Components/Rejestrowanie';
 import { LogowanieP } from './Components/LogowanieP';
+import { KlientPage } from './Components/KlientPage';
+import { PracownikPage } from './Components/PracownikPage';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="logowanie" element={<Logowanie />} />
         <Route path="rejestracja" element={<Rejestrowanie />} />
         <Route path="pracownik/logowanie" element={<LogowanieP />} />
+        <Route path="klient" element={<KlientPage />} />
+        <Route path="pracownik" element={<PracownikPage />} />
       </Routes>
     </BrowserRouter>
   );

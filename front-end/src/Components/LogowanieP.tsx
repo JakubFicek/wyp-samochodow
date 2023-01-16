@@ -1,6 +1,6 @@
 import { Alert, Button, TextInput } from "@mantine/core";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { API } from "../api/api";
 import "./Css/logowanie.css"
 
@@ -57,6 +57,7 @@ export function LogowanieP() {
           {errorValue}
         </Alert>}
         <Button onClick={handleLogin} color="green" radius="xs"> Log-in </Button>
+        {status === "logged" && <Navigate to="/pracownik" />}
     </div>
     </div>);
 }

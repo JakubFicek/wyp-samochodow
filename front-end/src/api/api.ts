@@ -4,6 +4,7 @@ export class API{
   public static async logowanieKlienta(user: daneLogowanie, flags: setFlags) {
     await fetch('http://localhost:5000/weryfikacja/login', {
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-type': 'application/json; charset=UTF-8',
             },
@@ -28,6 +29,7 @@ export class API{
     public static register = async ({user, setSigninErrorValue, setSigninStatus }: registerParams) => {
       await fetch('http://localhost:5000/weryfikacja/register', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
           },
@@ -69,6 +71,27 @@ export class API{
           .catch((err) => {
             console.log(err.message);
           });
+    }
+
+    public static logout = async (setLogOut: React.Dispatch<React.SetStateAction<boolean>>) => {
+      await fetch('http://localhost:5000/weryfikacja/log-out', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          setLogOut(true);
+          return response.json();
+        }
+        return response.json();
+     })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
     }
 }
 
