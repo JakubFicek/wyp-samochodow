@@ -8,6 +8,8 @@ import { RezerwacjaDto } from './dto/rezerwacja.dto';
 import Rezerwacja from './rezerwacja.entity';
 import SamochodService from 'src/samochod/samochod.service';
 import { daty } from 'src/typy/wpis.interface';
+import Platnosc from 'src/platnosc/platnosc.entity';
+import PlatnoscService from 'src/platnosc/platnosc.service';
 
 @Injectable()
 export default class RezerwacjaService {
@@ -20,12 +22,17 @@ export default class RezerwacjaService {
 
   //dodać do diagramu stworzRezerwacje i usunRezerwacje
   async stworzRezerwacje(rezerwacja: RezerwacjaDto) {
+    const d1 = new Date(rezerwacja.data_wypozyczenia);
+    const d2 = new Date(rezerwacja.data_zwrotu);
     //sprawdzanie czy samochod jest dostepny zrobie w samochodzie
     //i podczas wypisywania samochodow wypisze tylko w dostepnym terminie
 
     const samochod = await this.samochodRepository.findOne({
       where: { id: rezerwacja.id_samochodu },
     });
+    if (!samochod) {
+      throw new HttpException('Nie ma takiego samochodu', HttpStatus.NOT_FOUND);
+    }
 
     for (let i in samochod.zajete_terminy) {
       let dateW = samochod.zajete_terminy[i][0].getTime();
@@ -50,6 +57,16 @@ export default class RezerwacjaService {
       rezerwacja.data_wypozyczenia,
       rezerwacja.data_zwrotu,
     ]);
+
+    //platnosc
+    const dateDiffInDays =
+      Math.abs(d1.getTime() - d2.getTime()) / (1000 * 3600 * 24);
+
+    const zaliczka = Math.ceil(dateDiffInDays * (await samochod).cena_za_dzien);
+
+    let platnosc: PlatnoscService;
+    platnosc.zaplacZaliczke(zaliczka, rezerwacja.nr_rez);
+
     await this.samochodRepository.save(samochod);
     //return samochod.zajete_terminy;
 
