@@ -32,6 +32,9 @@ class Samochod {
   @Column()
   private czy_sprawdzony: boolean;
 
+  @Column('date', { array: true })
+  public zajete_terminy: Date[][];
+
   public dodajWpis(nowyWpis: string) {
     this.ksiazka_serwisowa = this.ksiazka_serwisowa + ' \n ' + nowyWpis;
   }

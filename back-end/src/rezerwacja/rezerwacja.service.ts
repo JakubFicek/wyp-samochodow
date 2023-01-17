@@ -2,25 +2,72 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { stringify } from 'querystring';
 import Klient from 'src/klient/klient.entity';
+import Samochod from 'src/samochod/samochod.entity';
 import { Repository } from 'typeorm';
 import { RezerwacjaDto } from './dto/rezerwacja.dto';
 import Rezerwacja from './rezerwacja.entity';
+import SamochodService from 'src/samochod/samochod.service';
+import { daty } from 'src/typy/wpis.interface';
 
 @Injectable()
 export default class RezerwacjaService {
   constructor(
     @InjectRepository(Rezerwacja)
     public rezerwacjaRepository: Repository<Rezerwacja>,
+    @InjectRepository(Samochod)
+    public samochodRepository: Repository<Samochod>,
   ) {}
 
   //dodać do diagramu stworzRezerwacje i usunRezerwacje
   async stworzRezerwacje(rezerwacja: RezerwacjaDto) {
+    //sprawdzanie czy samochod jest dostepny zrobie w samochodzie
+    //i podczas wypisywania samochodow wypisze tylko w dostepnym terminie
+
+    const samochod = await this.samochodRepository.findOne({
+      where: { id: rezerwacja.id_samochodu },
+    });
+
+    for (let i in samochod.zajete_terminy) {
+      let dateW = samochod.zajete_terminy[i][0].getTime();
+      let dateO = samochod.zajete_terminy[i][1].getTime();
+      if (
+        (new Date(rezerwacja.data_wypozyczenia).getTime() < dateW &&
+          new Date(rezerwacja.data_zwrotu).getTime() < dateW) ||
+        (new Date(rezerwacja.data_wypozyczenia).getTime() > dateO &&
+          new Date(rezerwacja.data_zwrotu).getTime() > dateO)
+      ) {
+        //jesli tak, to samochod jest dostepny
+        return samochod;
+      }
+      throw new HttpException(
+        'Samochod nie jest dostepny w tym terminie',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    //dodajemy termin przez index 0 -> data_wyp i index 1 -> data_odd
+    samochod.zajete_terminy.push([
+      rezerwacja.data_wypozyczenia,
+      rezerwacja.data_zwrotu,
+    ]);
+    await this.samochodRepository.save(samochod);
+    //return samochod.zajete_terminy;
+
     const nowaRezerwacja = await this.rezerwacjaRepository.create(rezerwacja);
     await this.rezerwacjaRepository.save(nowaRezerwacja);
     return nowaRezerwacja;
   }
 
   async usunRezerwacje(nr_rez: number) {
+    const rezerwacja = await this.znajdzRezerwacje(nr_rez);
+    const samochod = await this.samochodRepository.findOne({
+      where: { id: rezerwacja.id_samochodu },
+    });
+    //usuwamy termin przez index 0 -> data_wyp i index 1 -> data_odd
+    const warunek = (element: Date[]) =>
+      (element = [rezerwacja.data_wypozyczenia, rezerwacja.data_zwrotu]);
+    const index = samochod.zajete_terminy.findIndex(warunek);
+    samochod.zajete_terminy.splice(index, 1);
     const deleteResponse = await this.rezerwacjaRepository.delete(nr_rez);
     if (!deleteResponse.affected) {
       throw new HttpException(
@@ -31,7 +78,9 @@ export default class RezerwacjaService {
   }
 
   async znajdzRezerwacje(nr_rez: number) {
-    const rez = await this.rezerwacjaRepository.findOne({ where: { nr_rez } });
+    const rez = await this.rezerwacjaRepository.findOne({
+      where: { nr_rez: nr_rez },
+    });
     if (rez) {
       return rez;
     }

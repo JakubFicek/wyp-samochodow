@@ -18,7 +18,7 @@ export default class RezerwacjaController {
 
   //@Get('znajdz/:id') znajdz rezerwacje - potem zrobic
   @Get('znajdz/:id')
-  async znajdzRezerwacje(@Param() id: string) {
+  async znajdzRezerwacje(@Param('id') id: string) {
     return this.rezerwacjaService.znajdzRezerwacje(Number(id));
   }
 

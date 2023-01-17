@@ -11,6 +11,7 @@ import {
 import Rola from 'src/pracownicy/enum/role.enum';
 import RoleGuard from 'src/pracownicy/guard/role.guard';
 import { wpis } from 'src/typy/wpis.interface';
+import { daty } from 'src/typy/wpis.interface';
 import { edytujSamochodDto } from './dto/edytujSamochod.dto';
 import { SamochodDto } from './dto/samochod.dto';
 import SamochodService from './samochod.service';
@@ -27,6 +28,11 @@ export default class SamochodController {
   @Get('dostepne')
   wypiszDostepneSamochody() {
     return this.samochodService.wypiszDostepneSamochody();
+  }
+
+  @Get('dostepnewterminie')
+  wypiszDostepneSamochodyWTerminie(@Body() dwieDaty: daty) {
+    return this.samochodService.wypiszDostepneSamochodyWTerminie(dwieDaty);
   }
 
   @Get(':id')
