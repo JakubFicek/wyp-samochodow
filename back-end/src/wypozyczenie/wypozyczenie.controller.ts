@@ -4,11 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
-
-import { edytujWypozyczenieDto } from './dto/edytujWypozyczenie.dto';
+import { RequestWithUser } from 'src/typy/requestWithUser.interface';
+import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.guard';
 import { WypozyczenieDto } from './dto/wypozyczenie.dto';
 import WypozyczenieService from './wypozyczenie.service';
 import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
@@ -26,8 +27,9 @@ export default class WypozyczenieController {
   }
 
   @Post('create')
-  async stworzWypozyczenie(@Body() wypozyczenie: WypozyczenieDto) {
-    return this.wypozyczenieService.stworzWypozyczenie(wypozyczenie);
+  @UseGuards(JwtAuthenticationGuard)
+  async stworzWypozyczenie(@Body() wypozyczenie: WypozyczenieDto, @Req() request: RequestWithUser) {
+    return this.wypozyczenieService.stworzWypozyczenie(wypozyczenie, request.user);
   }
 
   @Delete(':id')

@@ -1,4 +1,5 @@
 import { Logout } from "./Logout";
+import "./Css/klientPage.css"
 
 export function KlientPage () {
   return(

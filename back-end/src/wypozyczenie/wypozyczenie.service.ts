@@ -32,7 +32,7 @@ export default class WypozyczenieService {
   }
 
   //dodac metode do diagramu klas
-  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto) {
+  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto, user: Klient) {
     const d1 = new Date(wypozyczenie.data_wypozyczenia);
     const d2 = new Date(wypozyczenie.data_zwrotu);
     //format wpisania: RRRR-MM-DDTHH:MM:SSZ
@@ -65,9 +65,8 @@ export default class WypozyczenieService {
     wypozyczenie.cena_wypozyczenia = Math.ceil(
       dateDiffInDays * (await samochod).cena_za_dzien,
     );
-
-    const noweWypozyczenie = await this.wypozyczenieRepository.create(
-      wypozyczenie,
+    console.log(user);
+    const noweWypozyczenie = await this.wypozyczenieRepository.create({...wypozyczenie, id_klienta: user.id}
     );
     await this.wypozyczenieRepository.save(noweWypozyczenie);
     return noweWypozyczenie;
