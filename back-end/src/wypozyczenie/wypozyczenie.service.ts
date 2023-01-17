@@ -8,6 +8,7 @@ import Samochod from 'src/samochod/samochod.entity';
 import { Repository } from 'typeorm';
 import { WypozyczenieDto } from './dto/wypozyczenie.dto';
 import Wypozyczenie from './wypozyczenie.entity';
+import PlatnoscService from 'src/platnosc/platnosc.service';
 
 @Injectable()
 export default class WypozyczenieService {
@@ -68,6 +69,11 @@ export default class WypozyczenieService {
     console.log(user);
     const noweWypozyczenie = await this.wypozyczenieRepository.create({...wypozyczenie, id_klienta: user.id}
     );
+
+    //platnosc
+    let platnosc: PlatnoscService;
+    platnosc.platnosc(wypozyczenie.cena_wypozyczenia, wypozyczenie.nr_wyp);
+
     await this.wypozyczenieRepository.save(noweWypozyczenie);
     return noweWypozyczenie;
   }
@@ -118,19 +124,13 @@ export default class WypozyczenieService {
       cena_wypozyczenia: r_cena_wypozyczenia,
     });
     await this.wypozyczenieRepository.save(noweWypozyczenie);
+
+    //platnosc
+    let platnosc: PlatnoscService;
+    platnosc.platnoscReszty(
+      noweWypozyczenie.cena_wypozyczenia,
+      noweWypozyczenie.nr_wyp,
+    );
     return noweWypozyczenie;
   }
-
-  //FUNKCJA POD TYM JEST ZUPEŁNIE BEZ SENSU W WYPOŻYCZENIU!
-  //Dodam metodę do klienta
-  //sprawdzHistorieKlienta(k: Klient) {
-  // dodać historię do klienta
-  //}
-
-  //TAK SAMO TUTAJ
-  //Nie mam zielonego pojęcia jak technicznie masz sprawdzać
-  //historię danego wypożyczenia.
-  //sprawdzHistorie() {
-  //nie wiem co tutaj
-  //}
 }

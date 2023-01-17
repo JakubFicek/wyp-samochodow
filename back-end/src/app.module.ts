@@ -9,6 +9,7 @@ import { WeryfikacjaModule } from './weryfikacja/weryfikacja.module';
 import { WypozyczenieModule } from './wypozyczenie/wypozyczenie.module';
 import { RezerwacjaModule } from './rezerwacja/rezerwacja.module';
 import { RaportModule } from './raport/raport.module';
+import { PlatnoscModule } from './platnosc/platnosc.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { RaportModule } from './raport/raport.module';
     WypozyczenieModule,
     RezerwacjaModule,
     RaportModule,
+    PlatnoscModule,
   ],
   controllers: [],
   providers: [],
