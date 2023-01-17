@@ -8,8 +8,6 @@ import { Serwisant } from '../entity/serwisant.entity';
 import { Sprzedawca } from '../entity/sprzedawca.entity';
 import Rola from '../enum/role.enum';
 import * as bcrypt from 'bcrypt';
-import Email from 'src/typy/email.interface';
-import Pracownik from '../entity/pracownik.entity';
 
 @Injectable()
 export default class PracownikService {
