@@ -19,6 +19,15 @@ import PracownikService from '../service/pracownik.service';
 export default class PracownikController {
   constructor(private readonly pracownikService: PracownikService) {}
 
+  @Get("sprzedawca")
+  async zwrocSprzedawcow(){
+    return this.pracownikService.zwrocSprzedawcow();
+  }
+  @Get("serwisant")
+  async zwrocSerwisantow(){
+    return this.pracownikService.zwrocSerwisantow();
+  }
+  
   @Post('create')
   @UseGuards(RoleGuard(Rola.Administrator)) // komentowac jak pierwszy raz admina dodaje sie
   async dodaj_pracownika(@Body() daneNowegoPracownika: NowyPracownikDto) {

@@ -4,6 +4,7 @@ export class API{
   public static async logowanieKlienta(user: daneLogowanie, flags: setFlags) {
     await fetch('http://localhost:5000/weryfikacja/login', {
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-type': 'application/json; charset=UTF-8',
             },
@@ -28,6 +29,7 @@ export class API{
     public static register = async ({user, setSigninErrorValue, setSigninStatus }: registerParams) => {
       await fetch('http://localhost:5000/weryfikacja/register', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
           },
@@ -47,6 +49,54 @@ export class API{
           console.log(err.message)
         });
   } 
+  public static async logowaniePracownika(user: daneLogowanie, flags: setFlags) {
+    await fetch('http://localhost:5000/weryfikacja/pracownik/login', {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify(user),
+          }).then((response) => {
+            if (response.ok) {
+              flags.setStatus("logged");
+              return response.json();
+            }
+            flags.setStatus("error");
+            return response.json();
+         })
+          .then((data) => {
+            flags.setErrorValue(data.message);
+            console.log(data.message)
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    }
+
+    public static logout = async (setLogOut: React.Dispatch<React.SetStateAction<boolean>>) => {
+      await fetch('http://localhost:5000/weryfikacja/log-out', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          setLogOut(true);
+          return response.json();
+        }
+        return response.json();
+     })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    }
+
+    public static zwrocSamochody = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocPracownika = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocPracownikow = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
 }
 
 interface daneLogowanie {

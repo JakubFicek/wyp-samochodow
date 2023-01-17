@@ -41,7 +41,6 @@ export default class SamochodController {
   }
 
   @Post()
-  @UseGuards(RoleGuard(Rola.Administrator))
   async dodaj_samochod(@Body() samochod: SamochodDto) {
     return this.samochodService.dodaj_samochod(samochod);
   }

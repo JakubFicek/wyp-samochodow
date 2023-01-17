@@ -4,7 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import { API } from "../api/api";
 import "./Css/logowanie.css"
 
-export function Logowanie() {
+export function LogowanieP() {
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState(false);
 
@@ -23,14 +23,14 @@ export function Logowanie() {
         else setPasswordError(false);
 
         if(password && email) {
-            await API.logowanieKlienta({email, password}, {setErrorValue, setStatus});
+            await API.logowaniePracownika({email, password}, {setErrorValue, setStatus});
             setEmail(""); setPassword("");
           }
     }
 
     return(
     <div className="containerLogowanie">
-    <h1>Zaloguj sie!</h1>
+    <h1>Zaloguj sie na konto pracowniczne!</h1>
     <p>Powrot do <Link to="/" style={{color: 'white'}}>strony glownej</Link></p>
     <div className="login">
         <TextInput
@@ -57,10 +57,7 @@ export function Logowanie() {
           {errorValue}
         </Alert>}
         <Button onClick={handleLogin} color="green" radius="xs"> Log-in </Button>
-        {status === "logged" && <Navigate to="/klient" />}
-    </div>
-    <div className="logowaniePracownicze" >
-        <h5>Logowanie na konto <Link style={{color: "white"}} to="/pracownik/logowanie">pracownicze!</Link></h5>
+        {status === "logged" && <Navigate to="/pracownik" />}
     </div>
     </div>);
 }

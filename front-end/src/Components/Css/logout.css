@@ -1,0 +1,8 @@
+.logout {
+    margin-top: 25px;
+    text-align: right;
+}
+
+.logout .mantine-Button-root {
+    margin: 15px;
+}
