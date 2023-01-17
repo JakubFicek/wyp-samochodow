@@ -1,0 +1,9 @@
+.listaPracownikow {
+    margin: auto;
+    text-align: center;
+    align-items: center;
+}
+
+.listaPracownikow h1 {
+    padding: 20px;
+}

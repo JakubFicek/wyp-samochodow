@@ -9,6 +9,7 @@ import { Sprzedawca } from "../entity/sprzedawca.entity";
 import Rola from "../enum/role.enum";
 import * as bcrypt from 'bcrypt';
 import Email from "src/typy/email.interface";
+import Pracownik from "../entity/pracownik.entity";
 
 @Injectable()
 export default class PracownikService {
@@ -20,6 +21,14 @@ export default class PracownikService {
     @InjectRepository(Serwisant)
     private serwisantRepository: Repository<Serwisant>,
     ) {}
+
+  async zwrocSprzedawcow() {
+    return this.sprzedawcaRepository.find();
+  }
+
+  async zwrocSerwisantow() {
+    return this.serwisantRepository.find();
+  }
 
   async dodaj_pracownika(daneNowegoPracownika: NowyPracownikDto) {
     const hashedHaslo = await bcrypt.hash(daneNowegoPracownika.haslo, 10);

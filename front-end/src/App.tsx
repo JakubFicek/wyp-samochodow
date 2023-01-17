@@ -6,6 +6,8 @@ import { Rejestrowanie } from './Components/Rejestrowanie';
 import { LogowanieP } from './Components/LogowanieP';
 import { KlientPage } from './Components/KlientPage';
 import { PracownikPage } from './Components/PracownikPage';
+import { ZarzPracownikami } from './Components/ZarzPracownikami';
+import { ZarzSamochodami } from './Components/ZarzSamochodami';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="pracownik/logowanie" element={<LogowanieP />} />
         <Route path="klient" element={<KlientPage />} />
         <Route path="pracownik" element={<PracownikPage />} />
+        <Route path="zarzPrac" element={<ZarzPracownikami />} />
+        <Route path="zarzSam" element={<ZarzSamochodami />} />
       </Routes>
     </BrowserRouter>
   );

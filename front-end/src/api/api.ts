@@ -93,6 +93,10 @@ export class API{
         console.log(err.message);
       });
     }
+
+    public static zwrocSamochody = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocPracownika = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocPracownikow = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
 }
 
 interface daneLogowanie {

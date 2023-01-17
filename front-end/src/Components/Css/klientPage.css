@@ -1,5 +1,15 @@
 .klientPage {
     text-align: center;
-    margin: auto;
     align-items: center;
+}
+
+.klientPage h1{
+    margin-bottom: 50px;
+}
+
+.klientPage .mantine-Button-root{
+    display: block;
+    margin: auto;
+    margin-bottom: 45px;
+    margin-top: 10px;
 }
