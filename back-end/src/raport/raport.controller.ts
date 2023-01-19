@@ -1,14 +1,9 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
   Param,
-  Patch,
   Post,
 } from '@nestjs/common';
-import { edytujRaportDto } from './dto/edytujRaport.dto';
-import { RaportDto } from './dto/raport.dto';
 import RaportService from './raport.service';
 
 @Controller('raport')
