@@ -8,8 +8,6 @@ import { Serwisant } from '../entity/serwisant.entity';
 import { Sprzedawca } from '../entity/sprzedawca.entity';
 import Rola from '../enum/role.enum';
 import * as bcrypt from 'bcrypt';
-import Email from 'src/typy/email.interface';
-import Pracownik from '../entity/pracownik.entity';
 
 @Injectable()
 export default class PracownikService {
@@ -98,10 +96,10 @@ export default class PracownikService {
     }
   }
 
-  async usun_pracownika(id: number) {
-    const deleteResponse = await this.sprzedawcaRepository.delete(id);
-    if (!deleteResponse.affected) {
-      const deleteResponse = await this.serwisantRepository.delete(id);
+  async usun_pracownika(id: number){
+    const prac = await this.sprzedawcaRepository.findOne({where: {id}});
+    if(prac) { 
+      const deleteResponse = await this.sprzedawcaRepository.delete(prac.id_w_konkretnej_bd);
       if (!deleteResponse.affected) {
         throw new HttpException(
           'Nie znaleziono pracownika o tym id',
@@ -109,6 +107,16 @@ export default class PracownikService {
         );
       }
     }
+    else {
+      const prac = await this.serwisantRepository.findOne({where: {id}});
+      if(prac) {
+        const deleteResponse = await this.serwisantRepository.delete(prac.id_w_konkretnej_bd);
+        if (!deleteResponse.affected) {
+          throw new HttpException('Nie znaleziono pracownika o tym id', HttpStatus.NOT_FOUND);
+        }
+      }
+    }
+    
   }
 
   async znajdzPoEmailu(email: string) {

@@ -25,10 +25,14 @@ export function PracownikPage () {
       <Logout />
       <div className="klientPage">
         <h1>Strona pracownicza!</h1>
+        <h3>Funkcje administratora:</h3>
         <Button onClick={handleZarzadzanie} size="lg" color="green" radius="xl"> Zarzadzaj pracownikami </Button>
         <Button onClick={handleAuta} color="green" size="lg" radius="xl"> Zarzadzaj samochodami </Button>
         {wybor === "samochody" && <Navigate to="/zarzSam" />}
         {wybor === "pracownicy" && <Navigate to="/zarzPrac" />}
+        <h3>Funkcje Sprzedawcy: </h3>
+
+        <h3>Funkcje Serwisanta</h3>
       </div>
     </div>
   );
