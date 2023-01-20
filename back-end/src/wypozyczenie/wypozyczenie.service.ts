@@ -46,7 +46,7 @@ export default class WypozyczenieService {
 
   //dodac metode do diagramu klas
   //funkcja tworząca wypożyczenie dla danego zalogowanego klienta
-  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto, user: Klient) {
+  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto, user_id: number) {
     const d1 = new Date(wypozyczenie.data_wypozyczenia);
     const d2 = new Date(wypozyczenie.data_zwrotu);
     if (d1.getTime() > d2.getTime()) {
@@ -99,7 +99,7 @@ export default class WypozyczenieService {
     //console.log(user);
     const noweWypozyczenie = await this.wypozyczenieRepository.create({
       ...wypozyczenie,
-      id_klienta: user.id,
+      id_klienta: user_id,
     });
     await this.wypozyczenieRepository.save(noweWypozyczenie);
 
@@ -134,9 +134,9 @@ export default class WypozyczenieService {
   }
 
   //funkcja tworząca wypożyczenie z istniejącej już rezerwacji, klient podaje jedynie nr_rez
-  async stworzWypozyczenieZRezerwacji(nr_rez: number, user: Klient) {
+  async stworzWypozyczenieZRezerwacji(nr_rez: number, user_id: number) {
     const rezerwacja = await this.rezerwacjaRepository.findOne({
-      where: { nr_rez, id_klienta: user.id },
+      where: { nr_rez, id_klienta: user_id },
     });
     if (!rezerwacja) {
       throw new HttpException(

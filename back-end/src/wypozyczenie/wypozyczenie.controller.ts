@@ -15,6 +15,7 @@ import WypozyczenieService from './wypozyczenie.service';
 import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
 import RoleGuard from 'src/pracownicy/guard/role.guard';
 import Rola from 'src/pracownicy/enum/role.enum';
+import { id } from 'src/typy/wpis.interface';
 
 @Controller('wypozyczenie')
 export default class WypozyczenieController {
@@ -42,14 +43,14 @@ export default class WypozyczenieController {
   }
 
   @Post('create')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(RoleGuard(Rola.Sprzedawca))
   async stworzWypozyczenie(
     @Body() wypozyczenie: WypozyczenieDto,
-    @Req() request: RequestWithUser,
+    @Body() id_klienta: id,
   ) {
     return this.wypozyczenieService.stworzWypozyczenie(
       wypozyczenie,
-      request.user,
+      id_klienta.id_klienta,
     );
   }
 
@@ -61,15 +62,15 @@ export default class WypozyczenieController {
   }
 
   @Post('zrezerwacji/:id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(RoleGuard(Rola.Sprzedawca))
   //tylko klient
   async stworzWypozyczenieZRezerwacji(
     @Param('id') id: string,
-    @Req() request: RequestWithUser,
+    @Body() id_klienta: id,
   ) {
     return this.wypozyczenieService.stworzWypozyczenieZRezerwacji(
       Number(id),
-      request.user,
+      id_klienta.id_klienta,
     );
   }
 }

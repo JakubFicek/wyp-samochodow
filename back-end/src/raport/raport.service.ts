@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import Pracownik from 'src/pracownicy/entity/pracownik.entity';
 import Rezerwacja from 'src/rezerwacja/rezerwacja.entity';
 import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
 import { Repository } from 'typeorm';
@@ -16,7 +17,7 @@ export default class RaportService {
     private rezerwacjaRepository: Repository<Rezerwacja>,
   ) {}
 
-  async stworzRaport(kto: number) {
+  async stworzRaport(kto: Pracownik) {
     const teraz = new Date();
     const ostatniMiesiac = new Date(new Date().setDate(teraz.getDate() - 30));
 
@@ -82,7 +83,7 @@ export default class RaportService {
 
     const nowyRaport = this.raportRepository.create({
       il_wypozyczen: a_wszystkie_wypozyczenia.length,
-      kto_sporzadzil: kto,
+      kto_sporzadzil: kto.id,
       wszystkie_wypozyczenia: id_wypozyczen(
         a_wszystkie_wypozyczenia,
       ).toString(),
@@ -96,9 +97,15 @@ export default class RaportService {
   }
 
   async wypiszOstatniRaport() {
+    //if(await this.raportRepository.find())
     const raportyId = await this.raportRepository.find({
       select: { id: true },
     });
+    if (raportyId.length == 0)
+      throw new HttpException(
+        'Nie istnieją żadne raporty',
+        HttpStatus.NOT_FOUND,
+      );
 
     const max = (arr: Raport[]) => {
       let arrcpy: number[] = [];
