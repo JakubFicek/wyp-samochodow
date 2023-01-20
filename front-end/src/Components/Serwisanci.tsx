@@ -17,7 +17,10 @@ export function Serwisanci () {
       <div>
         {data.map((pracownik: Pracownik) => 
           <li key={pracownik.id}>
-              <h5>SERWISANT: {pracownik.imie}: {pracownik.nazwisko}: {pracownik.email}</h5>
+              <h4>SERWISANT: {pracownik.imie} {pracownik.nazwisko} - {pracownik.email}</h4>
+                <p>
+                  Wynagrodzenie: {pracownik.wynagrodzenie}, typ_umowy: {pracownik.typ_umowy}, data zatrudnienia: {pracownik.data_zatrudnienia}
+                </p>
               <Button onClick={() => handleDelete(pracownik.id)} radius="md" color="red">Delete</Button>
           </li>)}
       </div>);

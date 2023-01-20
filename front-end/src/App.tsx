@@ -12,6 +12,8 @@ import { WyswietlanieRaportow } from './Components/WyswietlanieRaportow';
 import { TworzenieRaportow } from './Components/TworzenieRaportow';
 import { WypozyczeniaPrac } from './Components/WypozyczeniaPrac';
 import { KontrolaPojazdow } from './Components/KontrolaPojazdow';
+import { Wypozyczenia } from './Components/Wypozyczenia';
+import { Rezerwacje } from './Components/Rezerwacje';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path="tworzenieRaportow" element={<TworzenieRaportow />} />
         <Route path="wypozyczeniaPracownika" element={<WypozyczeniaPrac />} />
         <Route path="kontrolaPojazdow" element={<KontrolaPojazdow />} />
+        <Route path="wypozyczenia" element={<Wypozyczenia />} />
+        <Route path="rezerwacje" element={<Rezerwacje />} />
       </Routes>
     </BrowserRouter>
   );

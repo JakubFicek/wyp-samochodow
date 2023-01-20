@@ -39,7 +39,10 @@ export function ZarzPracownikami () {
     <ul className="list">
     {data.map((pracownik: Pracownik) => 
     <li key={pracownik.id}>
-      <h5>SPRZEDAWCA: {pracownik.imie}: {pracownik.nazwisko}: {pracownik.email}</h5>
+      <h4>SPRZEDAWCA: {pracownik.imie} {pracownik.nazwisko} - {pracownik.email}</h4>
+      <p>
+        Wynagrodzenie: {pracownik.wynagrodzenie}, typ_umowy: {pracownik.typ_umowy}, data zatrudnienia: {pracownik.data_zatrudnienia}
+      </p>
       <Button onClick={() => handleDelete(pracownik.id)} radius="md" color="red">Delete</Button>
     </li>)}
     <Serwisanci />
