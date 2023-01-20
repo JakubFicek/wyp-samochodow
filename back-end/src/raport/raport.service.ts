@@ -1,11 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { stringify } from 'querystring';
 import Rezerwacja from 'src/rezerwacja/rezerwacja.entity';
 import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
-import { Repository, Raw, DataSource, LessThan } from 'typeorm';
-import { edytujRaportDto } from './dto/edytujRaport.dto';
-import { RaportDto } from './dto/raport.dto';
+import { Repository } from 'typeorm';
 import Raport from './raport.entity';
 
 @Injectable()

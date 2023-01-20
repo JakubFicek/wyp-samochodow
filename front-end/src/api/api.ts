@@ -1,3 +1,5 @@
+import { SamochodDto } from "../Components/DodajSamochod";
+import { NowyPracownikDto } from "../Components/ZarzPracownikami";
 import { KlientDto } from "../dto/create-Klient.dto";
 
 export class API{
@@ -97,6 +99,72 @@ export class API{
     public static zwrocSamochody = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
     public static zwrocPracownika = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
     public static zwrocPracownikow = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+
+    public static deletePracownik = async (id: number) => {
+      await fetch(`http://localhost:5000/pracownik/${id}`, {
+        method: 'DELETE',
+      }).then((response) => response.json()
+       ).catch((err) => {
+        console.log(err.message);
+       })
+    }
+
+    public static nowyPracownik = async ({pracownik, setDodanieErrorValue, setDodanieStatus }: nowyPracownikParam) => {
+      await fetch('http://localhost:5000/pracownik/create', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+          body: JSON.stringify(pracownik),
+        }).then((response) => {
+          if (response.ok) {
+             setDodanieStatus("dodany");
+            return response.json();
+          }
+          setDodanieStatus("error");
+          return response.json();
+       })
+       .then((data) => {
+          setDodanieErrorValue(data.message);
+        })
+        .catch((err) => {
+          console.log(err.message)
+        });
+  } 
+
+  public static nowySamochod = async ({samochod, setDodanieErrorValue, setDodanieStatus }: nowySamochodParam) => {
+    await fetch('http://localhost:5000/samochod', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(samochod),
+      }).then((response) => {
+        if (response.ok) {
+           setDodanieStatus("dodany");
+          return response.json();
+        }
+        setDodanieStatus("error");
+        return response.json();
+     })
+     .then((data) => {
+        setDodanieErrorValue(data.message);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+  }
+  
+  public static deleteSamochod = async (id: number) => {
+    await fetch(`http://localhost:5000/samochod/${id}`, {
+      method: 'DELETE',
+    }).then((response) => response.json()
+     ).catch((err) => {
+      console.log(err.message);
+     })
+  }
 }
 
 interface daneLogowanie {
@@ -113,4 +181,16 @@ export interface registerParams {
   user: KlientDto;
   setSigninErrorValue: React.Dispatch<React.SetStateAction<string>>;
   setSigninStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface nowyPracownikParam {
+  pracownik: NowyPracownikDto;
+  setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
+  setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface nowySamochodParam {
+  samochod: SamochodDto;
+  setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
+  setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
 }

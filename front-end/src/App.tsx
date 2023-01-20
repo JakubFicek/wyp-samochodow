@@ -8,6 +8,12 @@ import { KlientPage } from './Components/KlientPage';
 import { PracownikPage } from './Components/PracownikPage';
 import { ZarzPracownikami } from './Components/ZarzPracownikami';
 import { ZarzSamochodami } from './Components/ZarzSamochodami';
+import { WyswietlanieRaportow } from './Components/WyswietlanieRaportow';
+import { TworzenieRaportow } from './Components/TworzenieRaportow';
+import { WypozyczeniaPrac } from './Components/WypozyczeniaPrac';
+import { KontrolaPojazdow } from './Components/KontrolaPojazdow';
+import { Wypozyczenia } from './Components/Wypozyczenia';
+import { Rezerwacje } from './Components/Rezerwacje';
 
 function App() {
   return (
@@ -21,13 +27,15 @@ function App() {
         <Route path="pracownik" element={<PracownikPage />} />
         <Route path="zarzPrac" element={<ZarzPracownikami />} />
         <Route path="zarzSam" element={<ZarzSamochodami />} />
+        <Route path="wyswietlanieRaportow" element={<WyswietlanieRaportow />} />
+        <Route path="tworzenieRaportow" element={<TworzenieRaportow />} />
+        <Route path="wypozyczeniaPracownika" element={<WypozyczeniaPrac />} />
+        <Route path="kontrolaPojazdow" element={<KontrolaPojazdow />} />
+        <Route path="wypozyczenia" element={<Wypozyczenia />} />
+        <Route path="rezerwacje" element={<Rezerwacje />} />
       </Routes>
     </BrowserRouter>
   );
 }
-/*<Route index element={<Home />} />
-          <Route path="blogs" element={<Blogs />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>*/
+
 export default App;
