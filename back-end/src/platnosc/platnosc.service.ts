@@ -3,6 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { platform } from 'os';
+import Klient from 'src/klient/klient.entity';
 import Rezerwacja from 'src/rezerwacja/rezerwacja.entity';
 import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
 import { Column, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
@@ -45,12 +46,15 @@ export default class PlatnoscService {
     );
   }
 
-  async zaplacZaliczke(kwota: number, nr_rez: number) {
+  async zaplacZaliczke(klient: Klient, nr_rez: number) {
     //przy rezerwacji
-    const rezerwacja = await this.rezerwacjaRepository.findOne({
-      where: { nr_rez },
+    const platnosc = this.platnoscRepository.create({
+      kwota: 50,
+      id_klienta: klient.id,
     });
-    if (rezerwacja) return 0.25 * kwota;
+    this.platnoscRepository.save(platnosc);
+
+    if (platnosc) return true;
     throw new HttpException('Nie ma takiej rezerwacji', HttpStatus.NOT_FOUND);
   }
 }
