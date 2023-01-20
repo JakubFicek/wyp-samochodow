@@ -7,3 +7,7 @@
 .listaPracownikow h1 {
     padding: 20px;
 }
+
+.list {
+    list-style: none;
+}

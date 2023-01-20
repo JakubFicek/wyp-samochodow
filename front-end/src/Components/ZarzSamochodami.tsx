@@ -38,7 +38,7 @@ export function ZarzSamochodami () {
     <ul className="list">
       {data.map((auto: Auto) => 
         <li key={auto.id}>
-            <h5>{auto.marka}:{auto.model}:{auto.rok_produkcji}</h5>
+            <h4>{auto.marka}:{auto.model}:{auto.rok_produkcji}</h4>
             <Button onClick={() => handleDelete(auto.id)} radius="md" color="red">Delete</Button>
         </li>)}
     </ul>

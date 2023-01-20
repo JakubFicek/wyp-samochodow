@@ -29,7 +29,10 @@ export function PracownikPage () {
   }
 
   const handleRaporty = () => {
-    if(data?.rola === "Administrator" || data?.rola ==="Sprzedawca") setWybor("raporty");
+    if(data?.rola === "Administrator" || data?.rola ==="Sprzedawca") {
+      API.nowyRaport();
+    }
+    setWybor("raportDodany");
   }
 
   const handleWysRap = () => {
@@ -48,8 +51,8 @@ export function PracownikPage () {
         {wybor === "pracownicy" && <Navigate to="/zarzPrac" />}
         <h3>Funkcje Sprzedawcy: </h3>
         <Button onClick={handleRaporty} size="lg" color="green" radius="xl"> Tworzenie raportow </Button>
+        {wybor === "raportDodany" && <p>Pozytywnie dodano raport! Mozesz go zobaczyc w spisie</p>}
         <Button onClick={handleWysRap} size="lg" color="green" radius="xl"> Wszystkie raporty </Button>
-        {wybor === "raporty" && <Navigate to="/tworzenieRaportow" />}
         {wybor === "raportyWys" && <Navigate to="/wyswietlanieRaportow" />}
         <Button onClick={handleWypozyczenia} size="lg" color="green" radius="xl"> Wypozyczenia </Button>
         {wybor === "wypozyczenia" && <Navigate to="/wypozyczeniaPracownika" />}
