@@ -28,7 +28,6 @@ function App() {
         <Route path="zarzPrac" element={<ZarzPracownikami />} />
         <Route path="zarzSam" element={<ZarzSamochodami />} />
         <Route path="wyswietlanieRaportow" element={<WyswietlanieRaportow />} />
-        <Route path="tworzenieRaportow" element={<TworzenieRaportow />} />
         <Route path="wypozyczeniaPracownika" element={<WypozyczeniaPrac />} />
         <Route path="kontrolaPojazdow" element={<KontrolaPojazdow />} />
         <Route path="wypozyczenia" element={<Wypozyczenia />} />

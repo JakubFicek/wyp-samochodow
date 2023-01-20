@@ -131,10 +131,10 @@ export class API{
         .catch((err) => {
           console.log(err.message)
         });
-  } 
+    } 
 
-  public static nowySamochod = async ({samochod, setDodanieErrorValue, setDodanieStatus }: nowySamochodParam) => {
-    await fetch('http://localhost:5000/samochod', {
+    public static nowySamochod = async ({samochod, setDodanieErrorValue, setDodanieStatus }: nowySamochodParam) => {
+      await fetch('http://localhost:5000/samochod', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -155,16 +155,36 @@ export class API{
       .catch((err) => {
         console.log(err.message)
       });
-  }
+    }
   
-  public static deleteSamochod = async (id: number) => {
-    await fetch(`http://localhost:5000/samochod/${id}`, {
-      method: 'DELETE',
-    }).then((response) => response.json()
-     ).catch((err) => {
-      console.log(err.message);
-     })
-  }
+    public static deleteSamochod = async (id: number) => {
+      await fetch(`http://localhost:5000/samochod/${id}`, {
+        method: 'DELETE',
+      }).then((response) => response.json()
+      ).catch((err) => {
+        console.log(err.message);
+      })
+    }
+
+    public static nowyRaport = async () => {
+      await fetch('http://localhost:5000/raport/create', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        }).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return response.json();
+       })
+       .then((data) => {
+        })
+        .catch((err) => {
+          console.log(err.message)
+        });
+  } 
 }
 
 interface daneLogowanie {

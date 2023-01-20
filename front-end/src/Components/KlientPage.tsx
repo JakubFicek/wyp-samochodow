@@ -5,8 +5,8 @@ import { Fasada } from "./Fasada";
 export function KlientPage () {
   return(
     <div>
+      <Logout />
       <div className="klientPage">
-        <Logout />
         <h1>Witamy w naszej apliakacji!</h1>
         <Fasada />
       </div>
