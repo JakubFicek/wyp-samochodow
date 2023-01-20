@@ -21,9 +21,12 @@ export default class RezerwacjaService {
   ) {}
 
   //dodać do diagramu stworzRezerwacje i usunRezerwacje
-  async stworzRezerwacje(rezerwacja: RezerwacjaDto) {
+  async stworzRezerwacje(rezerwacja: RezerwacjaDto, user: Klient) {
     const d1 = new Date(rezerwacja.data_wypozyczenia);
     const d2 = new Date(rezerwacja.data_zwrotu);
+    if (d1.getTime() > d2.getTime()) {
+      throw new HttpException('Nieprawidłowe daty', HttpStatus.BAD_GATEWAY);
+    }
     //sprawdzanie czy samochod jest dostepny zrobie w samochodzie
     //i podczas wypisywania samochodow wypisze tylko w dostepnym terminie
 
@@ -44,33 +47,38 @@ export default class RezerwacjaService {
           new Date(rezerwacja.data_zwrotu).getTime() > dateO)
       ) {
         //jesli tak, to samochod jest dostepny
-        return samochod;
+      } else {
+        throw new HttpException(
+          'Samochod nie jest dostepny w tym terminie',
+          HttpStatus.CONFLICT,
+        );
       }
-      throw new HttpException(
-        'Samochod nie jest dostepny w tym terminie',
-        HttpStatus.CONFLICT,
-      );
     }
 
     //dodajemy termin przez index 0 -> data_wyp i index 1 -> data_odd
     samochod.zajete_terminy.push([
-      rezerwacja.data_wypozyczenia,
-      rezerwacja.data_zwrotu,
+      new Date(rezerwacja.data_wypozyczenia),
+      new Date(rezerwacja.data_zwrotu),
     ]);
+
+    await this.samochodRepository.save(samochod);
 
     //platnosc
     const dateDiffInDays =
       Math.abs(d1.getTime() - d2.getTime()) / (1000 * 3600 * 24);
 
-    const zaliczka = Math.ceil(dateDiffInDays * (await samochod).cena_za_dzien);
+    // const zaliczka = Math.ceil(dateDiffInDays * (await samochod).cena_za_dzien);
 
-    let platnosc: PlatnoscService;
-    platnosc.zaplacZaliczke(zaliczka, rezerwacja.nr_rez);
+    // let platnosc: PlatnoscService;
+    // platnosc.zaplacZaliczke(zaliczka, rezerwacja.nr_rez);
 
     await this.samochodRepository.save(samochod);
     //return samochod.zajete_terminy;
 
-    const nowaRezerwacja = await this.rezerwacjaRepository.create(rezerwacja);
+    const nowaRezerwacja = await this.rezerwacjaRepository.create({
+      ...rezerwacja,
+      id_klienta: user.id,
+    });
     await this.rezerwacjaRepository.save(nowaRezerwacja);
     return nowaRezerwacja;
   }
@@ -102,5 +110,9 @@ export default class RezerwacjaService {
       return rez;
     }
     throw new HttpException('Nie znaleziono rezerwacji', HttpStatus.NOT_FOUND);
+  }
+
+  wypiszRezerwacje(user: Klient) {
+    return this.rezerwacjaRepository.find({ where: { id_klienta: user.id } });
   }
 }

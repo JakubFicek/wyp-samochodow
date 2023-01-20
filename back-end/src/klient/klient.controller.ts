@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import KlientService from './klient.service';
 
 @Controller('klient')
@@ -19,5 +15,5 @@ export default class KlientController {
     return this.klientService.historiaKlienta(Number(id));
   }
 
-  //reszta po zrobieniu platnosci
+  //reszta metod jest chyba bez sensu, wszystko zaimplementowane w innych klasach
 }

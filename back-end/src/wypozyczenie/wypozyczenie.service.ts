@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { WypozyczenieDto } from './dto/wypozyczenie.dto';
 import Wypozyczenie from './wypozyczenie.entity';
 import PlatnoscService from 'src/platnosc/platnosc.service';
+import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
 
 @Injectable()
 export default class WypozyczenieService {
@@ -19,8 +20,11 @@ export default class WypozyczenieService {
     public samochodRepository: Repository<Samochod>,
     @InjectRepository(Rezerwacja)
     public rezerwacjaRepository: Repository<Rezerwacja>,
+    @InjectRepository(Klient)
+    public klientRepository: Repository<Klient>,
   ) {}
 
+  //funkcja wyszukująca wypożyczenie po numerze wypożyczenia
   znajdzWypozyczenie(nr_wyp: number) {
     const wypo = this.wypozyczenieRepository.findOne({ where: { nr_wyp } });
     if (wypo) {
@@ -32,52 +36,84 @@ export default class WypozyczenieService {
     );
   }
 
+  //funkcja wypisująca wypożyczenia dla danego zalogowanego klienta
+  async wypiszWypozyczenia(user: Klient) {
+    const wypozyczenia = await this.wypozyczenieRepository.find({
+      where: { id_klienta: user.id },
+    });
+    return wypozyczenia;
+  }
+
   //dodac metode do diagramu klas
+  //funkcja tworząca wypożyczenie dla danego zalogowanego klienta
   async stworzWypozyczenie(wypozyczenie: WypozyczenieDto, user: Klient) {
     const d1 = new Date(wypozyczenie.data_wypozyczenia);
     const d2 = new Date(wypozyczenie.data_zwrotu);
+    if (d1.getTime() > d2.getTime()) {
+      throw new HttpException('Nieprawidłowe daty', HttpStatus.BAD_GATEWAY);
+    }
     //format wpisania: RRRR-MM-DDTHH:MM:SSZ
 
     const samochod = await this.samochodRepository.findOne({
       where: { id: wypozyczenie.id_samochodu },
     });
+    if (!samochod) {
+      throw new HttpException('Nie ma takiego samochodu', HttpStatus.NOT_FOUND);
+    }
 
     for (let i in samochod.zajete_terminy) {
       let dateW = samochod.zajete_terminy[i][0].getTime();
       let dateO = samochod.zajete_terminy[i][1].getTime();
+      console.log(new Date(wypozyczenie.data_wypozyczenia));
       if (
         (new Date(wypozyczenie.data_wypozyczenia).getTime() < dateW &&
           new Date(wypozyczenie.data_zwrotu).getTime() < dateW) ||
         (new Date(wypozyczenie.data_wypozyczenia).getTime() > dateO &&
           new Date(wypozyczenie.data_zwrotu).getTime() > dateO)
       ) {
+        console.log(samochod.zajete_terminy);
         //jesli tak, to samochod jest dostepny
-        return samochod;
+      } else {
+        throw new HttpException(
+          'Samochod nie jest dostepny w tym terminie',
+          HttpStatus.CONFLICT,
+        );
       }
-      throw new HttpException(
-        'Samochod nie jest dostepny w tym terminie',
-        HttpStatus.CONFLICT,
-      );
     }
 
+    //dodajemy termin przez index 0 -> data_wyp i index 1 -> data_odd
+    samochod.zajete_terminy.push([
+      new Date(wypozyczenie.data_wypozyczenia),
+      new Date(wypozyczenie.data_zwrotu),
+    ]);
+
+    await this.samochodRepository.save(samochod);
+
+    console.log(samochod.zajete_terminy);
     const dateDiffInDays =
       Math.abs(d1.getTime() - d2.getTime()) / (1000 * 3600 * 24);
 
     wypozyczenie.cena_wypozyczenia = Math.ceil(
       dateDiffInDays * (await samochod).cena_za_dzien,
     );
-    console.log(user);
-    const noweWypozyczenie = await this.wypozyczenieRepository.create({...wypozyczenie, id_klienta: user.id}
-    );
+    //console.log(user);
+    const noweWypozyczenie = await this.wypozyczenieRepository.create({
+      ...wypozyczenie,
+      id_klienta: user.id,
+    });
+    await this.wypozyczenieRepository.save(noweWypozyczenie);
 
     //platnosc
-    let platnosc: PlatnoscService;
-    platnosc.platnosc(wypozyczenie.cena_wypozyczenia, wypozyczenie.nr_wyp);
+    // let platnosc: PlatnoscService;
+    // platnosc.platnosc(
+    //   noweWypozyczenie.cena_wypozyczenia,
+    //   noweWypozyczenie.nr_wyp,
+    // );
 
-    await this.wypozyczenieRepository.save(noweWypozyczenie);
     return noweWypozyczenie;
   }
 
+  //funkcja usuwająca wypożyczenie po wypożyczeniu. nie jest brany nr klienta, ponieważ tylko sprzedawca i admin mogą usuwać.
   async usunWypozyczenie(nr_wyp: number) {
     const wypozyczenie = await this.znajdzWypozyczenie(nr_wyp);
     const samochod = await this.samochodRepository.findOne({
@@ -97,10 +133,18 @@ export default class WypozyczenieService {
     }
   }
 
-  async stworzWypozyczenieZRezerwacji(nr_rez: number) {
+  //funkcja tworząca wypożyczenie z istniejącej już rezerwacji, klient podaje jedynie nr_rez
+  async stworzWypozyczenieZRezerwacji(nr_rez: number, user: Klient) {
     const rezerwacja = await this.rezerwacjaRepository.findOne({
-      where: { nr_rez },
+      where: { nr_rez, id_klienta: user.id },
     });
+    if (!rezerwacja) {
+      throw new HttpException(
+        'Nie znaleziono rezerwacji',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
     const d1 = new Date(rezerwacja.data_wypozyczenia);
     const d2 = new Date(rezerwacja.data_zwrotu);
     //format wpisania: RRRR-MM-DDTHH:MM:SSZ
@@ -125,12 +169,14 @@ export default class WypozyczenieService {
     });
     await this.wypozyczenieRepository.save(noweWypozyczenie);
 
+    this.rezerwacjaRepository.delete(rezerwacja);
+
     //platnosc
-    let platnosc: PlatnoscService;
-    platnosc.platnoscReszty(
-      noweWypozyczenie.cena_wypozyczenia,
-      noweWypozyczenie.nr_wyp,
-    );
+    // let platnosc: PlatnoscService;
+    // platnosc.platnoscReszty(
+    //   noweWypozyczenie.cena_wypozyczenia,
+    //   noweWypozyczenie.nr_wyp,
+    // );
     return noweWypozyczenie;
   }
 }
