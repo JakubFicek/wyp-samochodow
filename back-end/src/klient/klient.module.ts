@@ -7,8 +7,9 @@ import KlientService from './klient.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Klient]), 
-    TypeOrmModule.forFeature([Wypozyczenie])],
+    TypeOrmModule.forFeature([Klient]),
+    TypeOrmModule.forFeature([Wypozyczenie]),
+  ],
   controllers: [KlientController],
   providers: [KlientService],
   exports: [KlientService],

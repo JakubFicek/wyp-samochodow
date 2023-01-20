@@ -13,6 +13,8 @@ import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.gu
 import { WypozyczenieDto } from './dto/wypozyczenie.dto';
 import WypozyczenieService from './wypozyczenie.service';
 import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
+import RoleGuard from 'src/pracownicy/guard/role.guard';
+import Rola from 'src/pracownicy/enum/role.enum';
 
 @Controller('wypozyczenie')
 export default class WypozyczenieController {
@@ -22,25 +24,52 @@ export default class WypozyczenieController {
   ) {}
 
   @Get('znajdz/:id')
+  @UseGuards(
+    JwtAuthenticationGuard,
+    RoleGuard(Rola.Administrator),
+    RoleGuard(Rola.Sprzedawca),
+  )
+  //dostep do wypozyczenia bedzie miec klient, sprzedawca i administrator
   async znajdzWypozyczenie(@Param('id') id: string) {
     return this.wypozyczenieService.znajdzWypozyczenie(Number(id));
   }
 
+  @Get('wypisz')
+  @UseGuards(JwtAuthenticationGuard)
+  //dostep do wypozyczenia bedzie miec klient
+  async wypiszWypozyczenia(@Req() request: RequestWithUser) {
+    return this.wypozyczenieService.wypiszWypozyczenia(request.user);
+  }
+
   @Post('create')
   @UseGuards(JwtAuthenticationGuard)
-  async stworzWypozyczenie(@Body() wypozyczenie: WypozyczenieDto, @Req() request: RequestWithUser) {
-    return this.wypozyczenieService.stworzWypozyczenie(wypozyczenie, request.user);
+  async stworzWypozyczenie(
+    @Body() wypozyczenie: WypozyczenieDto,
+    @Req() request: RequestWithUser,
+  ) {
+    return this.wypozyczenieService.stworzWypozyczenie(
+      wypozyczenie,
+      request.user,
+    );
   }
 
   @Delete(':id')
+  @UseGuards(RoleGuard(Rola.Administrator), RoleGuard(Rola.Sprzedawca))
+  //dostep do usuniecia wypozyczenia bedzie miec sprzedawca i admin
   async usunWypozyczenie(@Param('id') id: string) {
     return this.wypozyczenieService.usunWypozyczenie(Number(id));
   }
 
   @Post('zrezerwacji/:id')
-  async stworzWypozyczenieZRezerwacji(@Param('id') id: string) {
-    if (this.rezerwacjaService.znajdzRezerwacje(Number(id))) {
-      return this.wypozyczenieService.stworzWypozyczenieZRezerwacji(Number(id));
-    } else return this.rezerwacjaService.znajdzRezerwacje(Number(id));
+  @UseGuards(JwtAuthenticationGuard)
+  //tylko klient
+  async stworzWypozyczenieZRezerwacji(
+    @Param('id') id: string,
+    @Req() request: RequestWithUser,
+  ) {
+    return this.wypozyczenieService.stworzWypozyczenieZRezerwacji(
+      Number(id),
+      request.user,
+    );
   }
 }

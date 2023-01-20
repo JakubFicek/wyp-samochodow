@@ -49,9 +49,9 @@ export default class SamochodController {
   @UseGuards(RoleGuard(Rola.Sprzedawca))
   async zwrotDoPrzegladu(
     @Param('id') id: string,
-    @Body() samochod: edytujSamochodDto,
+    //@Body() samochod: edytujSamochodDto,
   ) {
-    return this.samochodService.zwrotDoPrzegladu(Number(id), samochod);
+    return this.samochodService.zwrotDoPrzegladu(Number(id) /*, samochod*/);
   }
 
   @Patch('stan/:id')
@@ -60,6 +60,12 @@ export default class SamochodController {
     @Body() samochod: edytujSamochodDto,
   ) {
     return this.samochodService.zmienStan(Number(id), samochod);
+  }
+
+  @Patch('napraw/:id')
+  @UseGuards(RoleGuard(Rola.Serwisant))
+  async napraw(@Param('id') id: string) {
+    return this.samochodService.serwis(Number(id));
   }
 
   @Patch('ksiazka/:id')

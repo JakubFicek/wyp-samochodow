@@ -7,6 +7,7 @@ import { edytujSamochodDto } from './dto/edytujSamochod.dto';
 import { SamochodDto } from './dto/samochod.dto';
 import Samochod from './samochod.entity';
 import { daty } from 'src/typy/wpis.interface';
+import { networkInterfaces } from 'os';
 
 @Injectable()
 export default class SamochodService {
@@ -15,16 +16,19 @@ export default class SamochodService {
     private samochodRepository: Repository<Samochod>,
   ) {}
 
+  //funkcja wypisująca wszystkie samochody w wypożyczalni
   wypiszSamochody() {
     return this.samochodRepository.find();
   }
 
+  //funkcja wypisująca dostępne samochody
   wypiszDostepneSamochody() {
     return this.samochodRepository.find({
       where: [{ stan_pojazdu: 'Dostepny' }],
     });
   }
 
+  //funkcja wypisująca dostępne samochody po podaniu dwóch dat w formacie "RRRR-MM-DDTHH:MM:SSZ" gdzie "T" oznacza Time a "Z" strefę czasową UTC
   async wypiszDostepneSamochodyWTerminie(daty: daty) {
     const samochody = await this.samochodRepository.find({
       where: [{ stan_pojazdu: 'Dostepny' }],
@@ -77,26 +81,26 @@ export default class SamochodService {
     }
   }
 
-  serwis() {
-    /* nie wiem co tutaj xd */
-  }
-
+  //funkcja zwracająca stan pojazdu. zwraca: 'Dostepny','Do naprawy','Do przegladu'.
   async zwrocStan(id: number) {
     const samochod = await this.samochodRepository.findOne({ where: { id } });
     return samochod.stan_pojazdu;
   }
 
-  async zwrotDoPrzegladu(id: number, samochod: edytujSamochodDto) {
-    await this.samochodRepository.update(id, samochod);
+  //funkcja następująca po oddaniu samochodu, wywołuje sprzedawca, zmienia stan na 'Do przegladu'
+  async zwrotDoPrzegladu(id: number /*samochod: edytujSamochodDto*/) {
     const nowySamochod = await this.samochodRepository.findOne({
       where: { id },
     });
-    if (nowySamochod) {
-      return nowySamochod;
+    if (!nowySamochod) {
+      throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
     }
-    throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
+    nowySamochod.stan_pojazdu = 'Do przegladu';
+    await this.samochodRepository.update(id, nowySamochod /*samochod*/);
+    return nowySamochod;
   }
 
+  //zmiana stanu samochodu tzn. dowolnych jego parametrów
   async zmienStan(id: number, samochod: edytujSamochodDto) {
     await this.samochodRepository.update(id, samochod);
     const nowySamochod = await this.samochodRepository.findOne({
@@ -108,6 +112,22 @@ export default class SamochodService {
     throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
   }
 
+  //funckja która zwraca stan samochodu 'Dostępny' po tym jak był 'Do naprawy'
+  async serwis(id: number) {
+    const samochod = await this.samochodRepository.findOne({ where: { id } });
+    if (!samochod)
+      throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
+    if ((samochod.stan_pojazdu = 'Do Naprawy')) {
+      samochod.stan_pojazdu = 'Dostepny';
+      await this.samochodRepository.update(id, samochod);
+    } else
+      throw new HttpException(
+        'Samochod nie wymaga naprawy',
+        HttpStatus.CONTINUE,
+      );
+  }
+
+  //funckja która edytuje książkę serwisową.
   async edytujKsiazkeSerwisowa(id: number, nowyWpis: wpis) {
     const sam = await this.samochodRepository.findOne({ where: { id } });
     sam.dodajWpis(nowyWpis.wpis);

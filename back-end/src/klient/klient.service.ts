@@ -41,8 +41,8 @@ export default class KlientService {
   }
 
   async znajdzPoEmailu(email: string) {
-    const user = await this.klientRepository.findOne({ where: { email } })
-    if(user) return user;
+    const user = await this.klientRepository.findOne({ where: { email } });
+    if (user) return user;
     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
 
@@ -50,19 +50,22 @@ export default class KlientService {
     const klient = await this.klientRepository.findOne({ where: { id } });
     return klient.weryfikacjaDanych();
   }
-  
+
   async historiaKlienta(id_klienta: number) {
     const wypozyczenia = await this.wypozyczenieRepository.find({
       where: { id_klienta },
     });
     return wypozyczenia;
   }
-  
+
   async znajdzPoId(id: number) {
-    const klient = await this.klientRepository.findOne({where: {id}});
+    const klient = await this.klientRepository.findOne({ where: { id } });
     if (klient) {
       return klient;
     }
-    throw new HttpException('Klient o tym id nie istnieje', HttpStatus.NOT_FOUND);
+    throw new HttpException(
+      'Klient o tym id nie istnieje',
+      HttpStatus.NOT_FOUND,
+    );
   }
 }
