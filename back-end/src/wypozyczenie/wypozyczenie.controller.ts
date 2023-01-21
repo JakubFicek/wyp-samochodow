@@ -16,6 +16,7 @@ import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
 import RoleGuard from 'src/pracownicy/guard/role.guard';
 import Rola from 'src/pracownicy/enum/role.enum';
 import { id } from 'src/typy/wpis.interface';
+import JwtAuthenticationGuardPracownik from 'src/weryfikacja/guards/jwt-authenticationP.guard';
 
 @Controller('wypozyczenie')
 export default class WypozyczenieController {
@@ -25,11 +26,7 @@ export default class WypozyczenieController {
   ) {}
 
   @Get('znajdz/:id')
-  @UseGuards(
-    JwtAuthenticationGuard,
-    RoleGuard(Rola.Administrator),
-    RoleGuard(Rola.Sprzedawca),
-  )
+  @UseGuards(JwtAuthenticationGuard || JwtAuthenticationGuardPracownik)
   //dostep do wypozyczenia bedzie miec klient, sprzedawca i administrator
   async znajdzWypozyczenie(@Param('id') id: string) {
     return this.wypozyczenieService.znajdzWypozyczenie(Number(id));
@@ -43,7 +40,7 @@ export default class WypozyczenieController {
   }
 
   @Post('create')
-  @UseGuards(RoleGuard(Rola.Sprzedawca))
+  @UseGuards(JwtAuthenticationGuard)
   async stworzWypozyczenie(
     @Body() wypozyczenie: WypozyczenieDto,
     @Body() id_klienta: id,
@@ -55,14 +52,14 @@ export default class WypozyczenieController {
   }
 
   @Delete(':id')
-  @UseGuards(RoleGuard(Rola.Administrator), RoleGuard(Rola.Sprzedawca))
+  @UseGuards(JwtAuthenticationGuard)
   //dostep do usuniecia wypozyczenia bedzie miec sprzedawca i admin
   async usunWypozyczenie(@Param('id') id: string) {
     return this.wypozyczenieService.usunWypozyczenie(Number(id));
   }
 
   @Post('zrezerwacji/:id')
-  @UseGuards(RoleGuard(Rola.Sprzedawca))
+  @UseGuards(JwtAuthenticationGuard)
   //tylko klient
   async stworzWypozyczenieZRezerwacji(
     @Param('id') id: string,
