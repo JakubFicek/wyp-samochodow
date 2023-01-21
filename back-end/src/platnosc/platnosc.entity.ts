@@ -8,6 +8,9 @@ class Platnosc {
 
   @Column()
   public kwota?: number;
+
+  @Column()
+  public id_klienta?: number;
 }
 
 export default Platnosc;
