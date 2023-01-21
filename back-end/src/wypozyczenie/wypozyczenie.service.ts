@@ -64,7 +64,7 @@ export default class WypozyczenieService {
     for (let i in samochod.zajete_terminy) {
       let dateW = samochod.zajete_terminy[i][0].getTime();
       let dateO = samochod.zajete_terminy[i][1].getTime();
-      console.log(new Date(wypozyczenie.data_wypozyczenia));
+      //console.log(new Date(wypozyczenie.data_wypozyczenia));
       if (
         (new Date(wypozyczenie.data_wypozyczenia).getTime() < dateW &&
           new Date(wypozyczenie.data_zwrotu).getTime() < dateW) ||

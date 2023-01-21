@@ -4,7 +4,7 @@ export interface wpis {
 
 export interface daty {
   data_wypozyczenia: Date;
-  data_oddania: Date;
+  data_zwrotu: string;
 }
 
 export interface id {

@@ -31,7 +31,7 @@ export default class SamochodController {
   }
 
   @Get('dostepnewterminie')
-  wypiszDostepneSamochodyWTerminie(@Body() dwieDaty: daty) {
+  async wypiszDostepneSamochodyWTerminie(@Body() dwieDaty: daty) {
     return this.samochodService.wypiszDostepneSamochodyWTerminie(dwieDaty);
   }
 
