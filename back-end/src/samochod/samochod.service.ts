@@ -35,20 +35,20 @@ export default class SamochodService {
     });
     const dostepne = (arr: Samochod[]) => {
       const arrcpy: Samochod[] = [];
-      let index: boolean = true;
+      let index: boolean = false;
       for (let x in arr) {
         if (arr[x].zajete_terminy[0] && arr[x].zajete_terminy[1]) {
           for (let i in arr[x].zajete_terminy) {
             let dateW = arr[x].zajete_terminy[i][0].getTime();
             let dateO = arr[x].zajete_terminy[i][1].getTime();
             if (
-              (new Date(daty.data_wypozyczenia).getTime() >= dateW &&
-                new Date(daty.data_wypozyczenia).getTime() <= dateO) ||
-              (new Date(daty.data_oddania).getTime() >= dateW &&
-                new Date(daty.data_oddania).getTime() <= dateO) ||
-              (new Date(daty.data_wypozyczenia).getTime() <= dateW &&
-                new Date(daty.data_oddania).getTime() >= dateO)
+              (new Date(daty.data_wypozyczenia).getTime() < dateW &&
+                new Date(daty.data_zwrotu).getTime() < dateW) ||
+              (new Date(daty.data_wypozyczenia).getTime() > dateO &&
+                new Date(daty.data_zwrotu).getTime() > dateO)
             ) {
+              index = true;
+            } else {
               index = false;
               break;
             }
@@ -56,7 +56,8 @@ export default class SamochodService {
           if (index) {
             //w petli jest termin zajety
             arrcpy.push(arr[x]);
-            index = true;
+            index = false;
+            console.log(false);
           }
         } else {
           //nie ma zajetych terminow

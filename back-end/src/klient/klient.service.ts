@@ -18,18 +18,7 @@ export default class KlientService {
     private wypozyczenieRepository: Repository<Wypozyczenie>,
   ) {}
 
-  wybierzDate() {
-    //zwiazane bedzie z rezerwacja/wypozyczeniem
-  }
-
-  podajDane() {
-    //zwiazanne bedzie z rezerwacja/wypozyczeniem
-  }
-
-  wybierzSamochod() {
-    //zwiazane bedzie z rezerwacja/wypozyczeniem
-  }
-
+  //przenieść do samochodu
   oddanie(samochod: Samochod) {
     //zaimplementowac najpierw platnosci
   }
