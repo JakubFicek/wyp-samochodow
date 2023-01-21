@@ -32,23 +32,22 @@ export default class WypozyczenieController {
     return this.wypozyczenieService.znajdzWypozyczenie(Number(id));
   }
 
+  @Get()
+  @UseGuards(JwtAuthenticationGuard)
+  async wypiszWszystkieWypozyczenia() {
+    return this.wypozyczenieService.wypiszWszystkieWypozyczenia();
+  }
+
   @Get('wypisz')
   @UseGuards(JwtAuthenticationGuard)
-  //dostep do wypozyczenia bedzie miec klient
   async wypiszWypozyczenia(@Req() request: RequestWithUser) {
     return this.wypozyczenieService.wypiszWypozyczenia(request.user);
   }
 
   @Post('create')
   @UseGuards(JwtAuthenticationGuard)
-  async stworzWypozyczenie(
-    @Body() wypozyczenie: WypozyczenieDto,
-    @Body() id_klienta: id,
-  ) {
-    return this.wypozyczenieService.stworzWypozyczenie(
-      wypozyczenie,
-      id_klienta.id_klienta,
-    );
+  async stworzWypozyczenie(@Body() wypozyczenie: WypozyczenieDto) {
+    return this.wypozyczenieService.stworzWypozyczenie(wypozyczenie);
   }
 
   @Delete(':id')

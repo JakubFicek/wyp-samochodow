@@ -23,6 +23,10 @@ export default class KlientService {
     //zaimplementowac najpierw platnosci
   }
 
+  async zwrocWszystkich() {
+    return await this.klientRepository.find();
+  }
+
   async create(daneKlienta: KlientDto) {
     const nowyKlient = await this.klientRepository.create(daneKlienta);
     await this.klientRepository.save(nowyKlient);

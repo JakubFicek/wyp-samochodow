@@ -88,6 +88,11 @@ export default class SamochodService {
     return samochod.stan_pojazdu;
   }
 
+  async zwrocJeden(id: number) {
+    const samochod = await this.samochodRepository.findOne({ where: { id } });
+    return samochod;
+  }
+
   //funkcja następująca po oddaniu samochodu, wywołuje sprzedawca, zmienia stan na 'Do przegladu'
   async zwrotDoPrzegladu(id: number) {
     const samochod = await this.samochodRepository.findOne({

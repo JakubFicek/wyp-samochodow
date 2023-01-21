@@ -1,6 +1,7 @@
 .klientPage {
     text-align: center;
     align-items: center;
+    margin: auto;
 }
 
 .klientPage h1{
@@ -11,5 +12,22 @@
     display: block;
     margin: auto;
     margin-bottom: 45px;
+    margin-top: 10px;
+}
+
+.rezerwacje {
+    text-align: center;
+    align-items: center;
+    margin: auto;
+}
+
+.mantine-DatePicker-label {
+    color: white;
+}
+
+.mantine-Button-root{
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
     margin-top: 10px;
 }

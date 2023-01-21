@@ -1,5 +1,6 @@
 import { SamochodDto } from "../Components/DodajSamochod";
-import { RezerwacjaType } from "../Components/Rezerwacje";
+import { Auto } from "../Components/Types/auto";
+import { Wypozyczenie } from "../Components/Wypozyczenia";
 import { NowyPracownikDto } from "../Components/ZarzPracownikami";
 import { KlientDto } from "../dto/create-Klient.dto";
 
@@ -189,7 +190,6 @@ export class API{
     
     public static zwrocRaporty = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
     public static zwrocRezerwacje = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
-    public static zwrocSamochod = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
 
     public static deleteRezerwacja = async (id: number) => {
       await fetch(`http://localhost:5000/rezerwacja/${id}`, {
@@ -201,7 +201,7 @@ export class API{
     }
 
     public static nowaRezerwacja = async ({rezerwacja, setDodanieErrorValue, setDodanieStatus }: nowaRezerwacjaParam) => {
-      await fetch('http://localhost:5000/samochod', {
+      await fetch('http://localhost:5000/rezerwacja/create', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -224,9 +224,9 @@ export class API{
       });
     }
 
-    public static zwrocDostepneSamochody = async (url: RequestInfo | URL, data1: Date, data2: Date ) => {
+    public static zwrocDostepneSamochody = async (url: RequestInfo | URL, data1: Date | null, data2: Date | null) => {
       return await fetch(url, {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
           },
@@ -234,7 +234,34 @@ export class API{
             data_wypozyczenia: data1,
             data_zwrotu: data2
             })
-        }).then((response) => response.json())
+        }).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return response.json();
+       })
+       .then((data: Auto[]) => {
+          return data;
+        })
+        .catch((err) => {
+          console.log(err.message)
+        });
+    }
+
+    public static zwrocSamochod = async (url: RequestInfo | URL) => {
+      return await fetch(url, {
+        }).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return response.json();
+       })
+       .then((data: Auto) => {
+          return data;
+        })
+        .catch((err) => {
+          console.log(err.message)
+        });
     }
 
     public static platnosc = async (platnosc: PlatnoscDto) => {
@@ -251,6 +278,85 @@ export class API{
         return response.json();
      })
      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    }
+
+    public static wypiszWypozyczenia = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocKlientow = async (url: RequestInfo | URL) => {
+      return await fetch(url, {
+        }).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return response.json();
+       })
+       .then((data: Klient[]) => {
+        return data;
+      })
+        .catch((err) => {
+          console.log(err.message)
+        });
+    }
+
+
+    public static deleteWypo = async (id: number) => {
+      await fetch(`http://localhost:5000/wypozyczenie/${id}`, {
+        method: 'DELETE',
+      }).then((response) => response.json()
+      ).catch((err) => {
+        console.log(err.message);
+      })
+    }
+
+    public static noweWypozyczenie = async ({wypo, setDodanieErrorValue, setDodanieStatus }: noweWypoParam) => {
+      await fetch('http://localhost:5000/wypozyczenie/create', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(wypo),
+      }).then((response) => {
+        if (response.ok) {
+           setDodanieStatus("dodany");
+          return response.json();
+        }
+        setDodanieStatus("error");
+        return response.json();
+     })
+     .then((data) => {
+      console.log(data);
+        setDodanieErrorValue(data.message);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    }
+
+    public static wypoZRez = async ({wypo, setDodanieErrorValue, setDodanieStatus }: wypoRezParam) => {
+      await fetch(`http://localhost:5000/wypozyczenie/zrezerwacji/${wypo.id_rezerwacji}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({id_klienta: wypo.id_klienta}),
+      }).then((response) => {
+        if (response.ok) {
+           setDodanieStatus("dodany");
+          return response.json();
+        }
+        setDodanieStatus("error");
+        return response.json();
+     })
+     .then((data) => {
+      console.log(data);
+        console.log(data)
+        setDodanieErrorValue(data.message);
       })
       .catch((err) => {
         console.log(err.message)
@@ -300,4 +406,28 @@ export interface nowaRezerwacjaParam {
   rezerwacja: RezerwacjaDto;
   setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
   setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface noweWypoParam {
+  wypo: WypozyczenieDto;
+  setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
+  setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface wypoRezParam {
+  wypo: {id_klienta: number,id_rezerwacji: number};
+  setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
+  setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface WypozyczenieDto {
+  id_samochodu: number;
+  data_wypozyczenia: Date | null;
+  id_klienta: number;
+  data_zwrotu: Date | null;
+}
+export interface Klient {
+  imie: string;
+  nazwisko: string;
+  id: number;
 }
