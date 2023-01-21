@@ -12,6 +12,7 @@ import Rola from 'src/pracownicy/enum/role.enum';
 import RoleGuard from 'src/pracownicy/guard/role.guard';
 import { wpis } from 'src/typy/wpis.interface';
 import { daty } from 'src/typy/wpis.interface';
+import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.guard';
 import { edytujSamochodDto } from './dto/edytujSamochod.dto';
 import { SamochodDto } from './dto/samochod.dto';
 import SamochodService from './samochod.service';
@@ -46,7 +47,7 @@ export default class SamochodController {
   }
 
   @Patch('zwrot/:id')
-  @UseGuards(RoleGuard(Rola.Sprzedawca))
+  @UseGuards(JwtAuthenticationGuard) //sprzedawca
   async zwrotDoPrzegladu(
     @Param('id') id: string,
     //@Body() samochod: edytujSamochodDto,
@@ -62,14 +63,20 @@ export default class SamochodController {
     return this.samochodService.zmienStan(Number(id), samochod);
   }
 
-  @Patch('napraw/:id')
-  @UseGuards(RoleGuard(Rola.Serwisant))
-  async napraw(@Param('id') id: string) {
+  @Patch('doserwisanta/:id')
+  @UseGuards(JwtAuthenticationGuard) //serwisant
+  async doNaprawy(@Param('id') id: string) {
     return this.samochodService.serwis(Number(id));
   }
 
+  @Patch('napraw/:id')
+  @UseGuards(JwtAuthenticationGuard) //serwisant
+  async napraw(@Param('id') id: string) {
+    return this.samochodService.zepsuty(Number(id));
+  }
+
   @Patch('ksiazka/:id')
-  @UseGuards(RoleGuard(Rola.Serwisant))
+  @UseGuards(JwtAuthenticationGuard) //serwisant
   async edytujKsiazkeSerwisowa(
     @Param('id') id: string,
     @Body() nowyWpis: wpis,
@@ -78,7 +85,7 @@ export default class SamochodController {
   }
 
   @Delete(':id')
-  @UseGuards(RoleGuard(Rola.Administrator))
+  @UseGuards(JwtAuthenticationGuard) //admin
   async usun_samochod(@Param('id') id: string) {
     return this.samochodService.usun_samochod(Number(id));
   }
