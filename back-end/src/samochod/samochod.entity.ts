@@ -32,7 +32,7 @@ class Samochod {
   @Column()
   private czy_sprawdzony: boolean;
 
-  @Column('date', { array: true })
+  @Column('timestamptz', { array: true })
   public zajete_terminy: Date[][];
 
   public dodajWpis(nowyWpis: string) {

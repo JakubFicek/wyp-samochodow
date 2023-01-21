@@ -94,16 +94,31 @@ export default class SamochodService {
   }
 
   //funkcja następująca po oddaniu samochodu, wywołuje sprzedawca, zmienia stan na 'Do przegladu'
-  async zwrotDoPrzegladu(id: number /*samochod: edytujSamochodDto*/) {
-    const nowySamochod = await this.samochodRepository.findOne({
+  async zwrotDoPrzegladu(id: number) {
+    const samochod = await this.samochodRepository.findOne({
       where: { id },
     });
-    if (!nowySamochod) {
+    if (!samochod) {
       throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
     }
-    nowySamochod.stan_pojazdu = 'Do przegladu';
-    await this.samochodRepository.update(id, nowySamochod /*samochod*/);
-    return nowySamochod;
+    let stan: string;
+    if (!samochod.stan_pojazdu) {
+      throw new HttpException(
+        'Samochód nie posiada stanu',
+        HttpStatus.AMBIGUOUS,
+      );
+    } else {
+      stan = samochod.stan_pojazdu;
+    }
+    if (stan === 'Dostepny') {
+      samochod.stan_pojazdu = 'Do przegladu';
+      await this.samochodRepository.update(id, samochod);
+    } else
+      throw new HttpException(
+        'Samochod nie jest dostepny',
+        HttpStatus.CONTINUE,
+      );
+    return samochod;
   }
 
   //zmiana stanu samochodu tzn. dowolnych jego parametrów
@@ -123,7 +138,17 @@ export default class SamochodService {
     const samochod = await this.samochodRepository.findOne({ where: { id } });
     if (!samochod)
       throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
-    if ((samochod.stan_pojazdu = 'Do Naprawy')) {
+    let stan: string;
+    if (!samochod.stan_pojazdu) {
+      throw new HttpException(
+        'Samochód nie posiada stanu',
+        HttpStatus.AMBIGUOUS,
+      );
+    } else {
+      stan = samochod.stan_pojazdu;
+    }
+    if (stan === 'Do naprawy' || stan === 'Do przegladu') {
+      console.log(1);
       samochod.stan_pojazdu = 'Dostepny';
       await this.samochodRepository.update(id, samochod);
     } else
@@ -131,6 +156,31 @@ export default class SamochodService {
         'Samochod nie wymaga naprawy',
         HttpStatus.CONTINUE,
       );
+    return samochod;
+  }
+
+  async zepsuty(id: number) {
+    const samochod = await this.samochodRepository.findOne({ where: { id } });
+    if (!samochod)
+      throw new HttpException('Nie znaleziono samochodu', HttpStatus.NOT_FOUND);
+    let stan: string;
+    if (!samochod.stan_pojazdu) {
+      throw new HttpException(
+        'Samochód nie posiada stanu',
+        HttpStatus.AMBIGUOUS,
+      );
+    } else {
+      stan = samochod.stan_pojazdu;
+    }
+    if (stan == 'Do przegladu') {
+      stan = 'Do naprawy';
+      await this.samochodRepository.update(id, samochod);
+    } else
+      throw new HttpException(
+        'Samochod nie jest przeznaczony do naprawy',
+        HttpStatus.CONTINUE,
+      );
+    return samochod;
   }
 
   //funckja która edytuje książkę serwisową.

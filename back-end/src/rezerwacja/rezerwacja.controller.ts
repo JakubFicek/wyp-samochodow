@@ -35,7 +35,7 @@ export default class RezerwacjaController {
   }
 
   @Get('wypisz')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard || JwtAuthenticationGuardPracownik)
   async wypiszRezerwacje(@Req() request: RequestWithUser) {
     //wypisac rezerwacje przypisane do danego klienta (zalogowanego)
     return await this.rezerwacjaService.wypiszRezerwacje(request.user);

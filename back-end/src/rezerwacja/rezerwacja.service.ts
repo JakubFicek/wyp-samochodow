@@ -23,6 +23,7 @@ export default class RezerwacjaService {
   //dodać do diagramu stworzRezerwacje i usunRezerwacje
   async stworzRezerwacje(rezerwacja: RezerwacjaDto, user: Klient) {
     const d1 = new Date(rezerwacja.data_wypozyczenia);
+    console.log(d1);
     const d2 = new Date(rezerwacja.data_zwrotu);
     if (d1.getTime() > d2.getTime()) {
       throw new HttpException('Nieprawidłowe daty', HttpStatus.BAD_GATEWAY);
@@ -41,10 +42,8 @@ export default class RezerwacjaService {
       let dateW = samochod.zajete_terminy[i][0].getTime();
       let dateO = samochod.zajete_terminy[i][1].getTime();
       if (
-        (new Date(rezerwacja.data_wypozyczenia).getTime() < dateW &&
-          new Date(rezerwacja.data_zwrotu).getTime() < dateW) ||
-        (new Date(rezerwacja.data_wypozyczenia).getTime() > dateO &&
-          new Date(rezerwacja.data_zwrotu).getTime() > dateO)
+        (d1.getTime() < dateW && d2.getTime() < dateW) ||
+        (d1.getTime() > dateO && d2.getTime() > dateO)
       ) {
         //jesli tak, to samochod jest dostepny
       } else {
@@ -56,24 +55,16 @@ export default class RezerwacjaService {
     }
 
     //dodajemy termin przez index 0 -> data_wyp i index 1 -> data_odd
-    samochod.zajete_terminy.push([
-      new Date(rezerwacja.data_wypozyczenia),
-      new Date(rezerwacja.data_zwrotu),
-    ]);
+    samochod.zajete_terminy.push([d1, d2]);
 
-    await this.samochodRepository.save(samochod);
-
+    //await this.samochodRepository.save(samochod);
+    await this.samochodRepository.update(samochod.id, {
+      ...samochod,
+      zajete_terminy: samochod.zajete_terminy,
+    });
     //platnosc
     const dateDiffInDays =
       Math.abs(d1.getTime() - d2.getTime()) / (1000 * 3600 * 24);
-
-    // const zaliczka = Math.ceil(dateDiffInDays * (await samochod).cena_za_dzien);
-
-    // let platnosc: PlatnoscService;
-    // platnosc.zaplacZaliczke(zaliczka, rezerwacja.nr_rez);
-
-    await this.samochodRepository.save(samochod);
-    //return samochod.zajete_terminy;
 
     const nowaRezerwacja = await this.rezerwacjaRepository.create({
       ...rezerwacja,
@@ -82,7 +73,6 @@ export default class RezerwacjaService {
     await this.rezerwacjaRepository.save(nowaRezerwacja);
     return nowaRezerwacja;
   }
-
   async usunRezerwacje(nr_rez: number) {
     const rezerwacja = await this.znajdzRezerwacje(nr_rez);
     const samochod = await this.samochodRepository.findOne({
@@ -90,9 +80,13 @@ export default class RezerwacjaService {
     });
     //usuwamy termin przez index 0 -> data_wyp i index 1 -> data_odd
     const warunek = (element: Date[]) =>
-      (element = [rezerwacja.data_wypozyczenia, rezerwacja.data_zwrotu]);
+      element.toString() ==
+      [rezerwacja.data_wypozyczenia, rezerwacja.data_zwrotu].toString();
+
     const index = samochod.zajete_terminy.findIndex(warunek);
     samochod.zajete_terminy.splice(index, 1);
+    this.samochodRepository.save(samochod);
+
     const deleteResponse = await this.rezerwacjaRepository.delete(nr_rez);
     if (!deleteResponse.affected) {
       throw new HttpException(

@@ -96,27 +96,32 @@ export default class PracownikService {
     }
   }
 
-  async usun_pracownika(id: number){
-    const prac = await this.sprzedawcaRepository.findOne({where: {id}});
-    if(prac) { 
-      const deleteResponse = await this.sprzedawcaRepository.delete(prac.id_w_konkretnej_bd);
+  async usun_pracownika(id: number) {
+    const prac = await this.sprzedawcaRepository.findOne({ where: { id } });
+    if (prac) {
+      const deleteResponse = await this.sprzedawcaRepository.delete(
+        prac.id_w_konkretnej_bd,
+      );
       if (!deleteResponse.affected) {
         throw new HttpException(
           'Nie znaleziono pracownika o tym id',
           HttpStatus.NOT_FOUND,
         );
       }
-    }
-    else {
-      const prac = await this.serwisantRepository.findOne({where: {id}});
-      if(prac) {
-        const deleteResponse = await this.serwisantRepository.delete(prac.id_w_konkretnej_bd);
+    } else {
+      const prac = await this.serwisantRepository.findOne({ where: { id } });
+      if (prac) {
+        const deleteResponse = await this.serwisantRepository.delete(
+          prac.id_w_konkretnej_bd,
+        );
         if (!deleteResponse.affected) {
-          throw new HttpException('Nie znaleziono pracownika o tym id', HttpStatus.NOT_FOUND);
+          throw new HttpException(
+            'Nie znaleziono pracownika o tym id',
+            HttpStatus.NOT_FOUND,
+          );
         }
       }
     }
-    
   }
 
   async znajdzPoEmailu(email: string) {
@@ -160,7 +165,6 @@ export default class PracownikService {
           where: { id },
         });
         if (szukany) {
-          return szukany;
         } else {
           throw new HttpException(
             'Nie znaleziono pracownika o tym id',

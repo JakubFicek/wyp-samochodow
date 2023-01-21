@@ -91,7 +91,11 @@ export default class WypozyczenieService {
       new Date(wypozyczenie.data_zwrotu),
     ]);
 
-    await this.samochodRepository.save(samochod);
+    //await this.samochodRepository.save(samochod);
+    await this.samochodRepository.update(samochod.id, {
+      ...samochod,
+      zajete_terminy: samochod.zajete_terminy,
+    });
 
     console.log(samochod.zajete_terminy);
     const dateDiffInDays =
@@ -124,9 +128,13 @@ export default class WypozyczenieService {
     });
     //usuwamy termin przez index 0 -> data_wyp i index 1 -> data_odd
     const warunek = (element: Date[]) =>
-      (element = [wypozyczenie.data_wypozyczenia, wypozyczenie.data_zwrotu]);
+      element.toString() ==
+      [wypozyczenie.data_wypozyczenia, wypozyczenie.data_zwrotu].toString();
+
     const index = samochod.zajete_terminy.findIndex(warunek);
     samochod.zajete_terminy.splice(index, 1);
+    this.samochodRepository.save(samochod);
+
     const deleteResponse = await this.wypozyczenieRepository.delete(nr_wyp);
     if (!deleteResponse.affected) {
       throw new HttpException(
