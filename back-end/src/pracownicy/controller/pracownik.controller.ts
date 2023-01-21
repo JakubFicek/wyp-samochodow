@@ -29,7 +29,7 @@ export default class PracownikController {
   }
 
   @Post('create')
-  //@UseGuards(RoleGuard(Rola.Administrator)) // komentowac jak pierwszy raz admina dodaje sie
+  @UseGuards(RoleGuard(Rola.Administrator)) // komentowac jak pierwszy raz admina dodaje sie
   async dodaj_pracownika(@Body() daneNowegoPracownika: NowyPracownikDto) {
     return this.pracownikService.dodaj_pracownika(daneNowegoPracownika);
   }
