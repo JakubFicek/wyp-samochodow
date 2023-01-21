@@ -54,7 +54,7 @@ struktura:
 metody:
 
 - create(_daneKlienta: KlientDto_)
-  Tworzy instancję klienta
+  >Tworzy instancję klienta
 
 - znajdzPoEmailu(_email: string_)
   Zwraca klienta po jego emailu
