@@ -11,7 +11,7 @@ export default class RaportController {
   constructor(private readonly raportService: RaportService) {}
 
   @Get()
-  @UseGuards(RoleGuard(Rola.Administrator))
+  @UseGuards(JwtAuthenticationGuardPracownik)
   wypiszRaporty() {
     return this.raportService.wypiszRaporty();
   }

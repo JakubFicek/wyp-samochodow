@@ -4,5 +4,4 @@ export class RezerwacjaDto {
   data_wypozyczenia: Date;
   data_zwrotu: Date;
   id_klienta?: number;
-  //godzina_odbioru: Date;
 }

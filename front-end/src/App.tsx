@@ -9,7 +9,6 @@ import { PracownikPage } from './Components/PracownikPage';
 import { ZarzPracownikami } from './Components/ZarzPracownikami';
 import { ZarzSamochodami } from './Components/ZarzSamochodami';
 import { WyswietlanieRaportow } from './Components/WyswietlanieRaportow';
-import { TworzenieRaportow } from './Components/TworzenieRaportow';
 import { WypozyczeniaPrac } from './Components/WypozyczeniaPrac';
 import { KontrolaPojazdow } from './Components/KontrolaPojazdow';
 import { Wypozyczenia } from './Components/Wypozyczenia';

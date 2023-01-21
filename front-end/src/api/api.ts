@@ -1,4 +1,5 @@
 import { SamochodDto } from "../Components/DodajSamochod";
+import { RezerwacjaType } from "../Components/Rezerwacje";
 import { NowyPracownikDto } from "../Components/ZarzPracownikami";
 import { KlientDto } from "../dto/create-Klient.dto";
 
@@ -184,7 +185,44 @@ export class API{
         .catch((err) => {
           console.log(err.message)
         });
-  } 
+    }
+    
+    public static zwrocRaporty = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocRezerwacje = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+    public static zwrocSamochod = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
+
+    public static deleteRezerwacja = async (id: number) => {
+      await fetch(`http://localhost:5000/rezerwacja/${id}`, {
+        method: 'DELETE',
+      }).then((response) => response.json()
+      ).catch((err) => {
+        console.log(err.message);
+      })
+    }
+
+    public static nowaRezerwacja = async ({rezerwacja, setDodanieErrorValue, setDodanieStatus }: nowaRezerwacjaParam) => {
+      await fetch('http://localhost:5000/samochod', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(rezerwacja),
+      }).then((response) => {
+        if (response.ok) {
+           setDodanieStatus("dodany");
+          return response.json();
+        }
+        setDodanieStatus("error");
+        return response.json();
+     })
+     .then((data) => {
+        setDodanieErrorValue(data.message);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    }
 }
 
 interface daneLogowanie {
@@ -211,6 +249,19 @@ export interface nowyPracownikParam {
 
 export interface nowySamochodParam {
   samochod: SamochodDto;
+  setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
+  setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface RezerwacjaDto {
+  id_samochodu: number;
+  data_wypozyczenia: Date | null;
+  data_zwrotu: Date | null;
+}
+
+
+export interface nowaRezerwacjaParam {
+  rezerwacja: RezerwacjaDto;
   setDodanieErrorValue: React.Dispatch<React.SetStateAction<string>>;
   setDodanieStatus: React.Dispatch<React.SetStateAction<string>>;
 }
