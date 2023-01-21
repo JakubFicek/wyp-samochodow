@@ -57,16 +57,16 @@ metody:
   >Tworzy instancję klienta
 
 - znajdzPoEmailu(_email: string_)
-  Zwraca klienta po jego emailu
+  >Zwraca klienta po jego emailu
 
 - weryfikacja_danych(_id: number_)
-  Weryfikuje poprawność danych
+  >Weryfikuje poprawność danych
 
 - historiaKlienta(_id_klienta: number_)
-  Wypisuje historię wypożyczeń klienta
+  >Wypisuje historię wypożyczeń klienta
 
 - znajdzPoId(_id: number_)
-  Zwraca klienta po jego numerze id
+  >Zwraca klienta po jego numerze id
 
 ## Platnosc
 
@@ -79,7 +79,7 @@ struktura:
 metody:
 
 - zaplacZaliczke(_klient: Klient, nr_rez: number_)
-  Zwraca true dla "zapłaconej" rezerwacji. Każda zaliczka to 50 złotych, kwota jest dodawana do bazy razem z id klienta.
+  >Zwraca true dla "zapłaconej" rezerwacji. Każda zaliczka to 50 złotych, kwota jest dodawana do bazy razem z id klienta.
 
 ## Pracownicy
 
@@ -100,14 +100,14 @@ metody:
 - zwrocSprzedawcow()
 - zwrocSerwisantow()
 - dodaj_pracownika(_daneNowegoPracownika: NowyPracownikDto_)
-  Wykorzystywana wyłącznie przez Administratora. Dodaje nowego pracownika do bazy danych. Szyfruje hasło.
+  >Wykorzystywana wyłącznie przez Administratora. Dodaje nowego pracownika do bazy danych. Szyfruje hasło.
 - edytujPracownika(_id: number, noweDane: EdytujPracownika_)
-  Wykorzystywana wyłącznie przez Administratora
+  >Wykorzystywana wyłącznie przez Administratora
 - usunPracownika(_id: number_)
-  Wykorzystywana wyłącznie przez Administratora
+  >Wykorzystywana wyłącznie przez Administratora
 - znajdzPoEmailu(_email: string_)
 - ZnajdzPoId(_id: number_)
-  Zwraca Pracownika o danym id.
+  >Zwraca Pracownika o danym id.
 
 **Poniżej znajdują się klasy pochodne klasy Pracownik i posiadają wszystkie powyższe atrybuty**
 
@@ -143,11 +143,11 @@ Struktura:
 metody:
 
 - stworzRaport(kto: Pracownik)
-  Jako argument przyjmuje pracownika który stworzył raport i obejmuje jego id w raporcie.
+  >Jako argument przyjmuje pracownika który stworzył raport i obejmuje jego id w raporcie.
 - wypiszOstatniRaport()
-  Zwraca ostatni utworzony raport.
+  >Zwraca ostatni utworzony raport.
 - wypiszRaporty()
-  Zwraca wszystkie raporty.
+  >Zwraca wszystkie raporty.
 
 ## Rezerwacja
 
@@ -162,13 +162,13 @@ Struktura:
 Metody:
 
 - stworzRezerwacje(_rezerwacja: RezerwacjaDto, user: Klient_)
-  Tylko zalogowany Klient może korzystać. Tworzy rejestrację na podstawie wysłanych informacji w postaci interfejsu RezerwacjaDto.
+  >Tylko zalogowany Klient może korzystać. Tworzy rejestrację na podstawie wysłanych informacji w postaci interfejsu RezerwacjaDto.
 - usunRezerwacje(_nr_rez: number_)
-  Tylko zalogowany Klient może korzystać.
+  >Tylko zalogowany Klient może korzystać.
 - znajdzRezerwacje(_nr_rez: number_)
-  Wyszukuje daną rezerwację.
+  >Wyszukuje daną rezerwację.
 - wypiszRezerwacje(_user: Klient_)
-  Tylko zalogowany Klient może korzystać. Wykorzystuje id zalogowanego klienta do wyszukania i wypisania jego wszystkich rezerwacji.
+  >Tylko zalogowany Klient może korzystać. Wykorzystuje id zalogowanego klienta do wyszukania i wypisania jego wszystkich rezerwacji.
 
 ## Samochod
 
@@ -191,22 +191,22 @@ Metody:
 - wypiszSamochody()
 - wypiszDostepneSamochody()
 - wypiszDostepneSamochodyWTerminie(_daty: daty_)
-  Powyższe metody należy lepiej wyjaśnić. Pierwsza, wypisuje wszystkie samochody. Druga, te które są dostępne do użytku, ale także te obecnie zajmowane. Trzecia zwraca samochody wolne w podanym terminie.
+  >Powyższe metody należy lepiej wyjaśnić. Pierwsza, wypisuje wszystkie samochody. Druga, te które są dostępne do użytku, ale także te obecnie zajmowane. Trzecia zwraca samochody wolne w podanym terminie.
 - dodajSamochod(_samochod: SamochodDto_)
-  Wykorzystywana wyłącznie przez Administratora, dodaje samochód do bazy danych.
+  >Wykorzystywana wyłącznie przez Administratora, dodaje samochód do bazy danych.
 - usun_samochod(_id: number_)
-  Wykorzystywana wyłącznie przez Administratora, usuwa samochód z bazy danych.
+  >Wykorzystywana wyłącznie przez Administratora, usuwa samochód z bazy danych.
 - zwrocStan(_id: number_)
-  Zwraca stan samochodu. Dostępne są stany:
-  'Dostepny', 'Do naprawy', 'Do przegladu'.
+  >Zwraca stan samochodu. Dostępne są stany:
+  >'Dostepny', 'Do naprawy', 'Do przegladu'.
 - zwrotDoPrzegladu(_id: number_)
-  Metoda wymagająca implementacji dalszej
+  >Metoda wymagająca implementacji dalszej
 - zmienStan(_id: number, samochod: edytujSamochodDto_)
-  Metoda zmieniająca dowolne parametry samochodu.
+  >Metoda zmieniająca dowolne parametry samochodu.
 - serwis(_id: number_)
-  Wyłącznie wykorzystywana przez Serwisanta. funkcja zwracająca stan samochodu na 'Dostepny', po tym jak był 'Do naprawy'.
+  >Wyłącznie wykorzystywana przez Serwisanta. funkcja zwracająca stan samochodu na 'Dostepny', po tym jak był 'Do naprawy'.
 - edytujKsiazkeSerwisowa(_id: number, nowyWpis: wpis_)
-  Wyłącznie wykorzystywana przez Serwisanta. Metoda edytująca książkę serwisową.
+  >Wyłącznie wykorzystywana przez Serwisanta. Metoda edytująca książkę serwisową.
 
 ## Typy
 
@@ -254,18 +254,18 @@ Struktura:
 
 - email: string
 - password: string
-  _Ważna uwaga! Klient oraz rejestracja posiada hasło, a login password. Niestety implementacja frameworka nest.js nie pozwalała na użycie dowolnej nazwy w tym zakresie._
+  >_Ważna uwaga! Klient oraz rejestracja posiada hasło, a login password. Niestety implementacja frameworka nest.js nie pozwalała na użycie dowolnej nazwy w tym zakresie._
 
 #### Metody:
 
 - register(_daneZakladaniaKonta: RegisterDto_)
-  Metoda rejestrująca konto klienta w bazie danych.
+  >Metoda rejestrująca konto klienta w bazie danych.
 - potwierdzKlienta(_email: string, hashedPass: string_)
-  Metoda pozwalająca zweryfikować podczas logowania email i hasło klienta.
+  >Metoda pozwalająca zweryfikować podczas logowania email i hasło klienta.
 - potwierdzPracownika(_email: string, hashedPass: string_)
-  Metoda pozwalająca zweryfikować podczas logowania email i hasło pracownika.
+  >Metoda pozwalająca zweryfikować podczas logowania email i hasło pracownika.
 - zweryfikujHaslo(_plainTextPassword: string, hashedPassword: string_)
-  Pośrednia metoda która jest używana do odszyfrowywania zahaszowanych haseł.
+  >Pośrednia metoda która jest używana do odszyfrowywania zahaszowanych haseł.
 
 ## Wypozyczenie
 
@@ -281,15 +281,15 @@ Struktura:
 Metody:
 
 - znajdzWypozyczenie(_nr_wyp: number_)
-  Metoda znajdująca wypożyczenie po numerze wypożyczenia
+  >Metoda znajdująca wypożyczenie po numerze wypożyczenia
 - wypiszWypozyczenia(_user: Klient_)
-  Metoda której używa tylko Klient. Wypisuje wszystkie wypożyczenia danego klienta.
+  >Metoda której używa tylko Klient. Wypisuje wszystkie wypożyczenia danego klienta.
 - stworzWypozyczenie(_wypozyczenie: WypozyczenieDto, user_id: number_)
-  Ta metoda uzupełnia niezbędne atrybuty tej klasy podanymi jako _wypozyczenie_ informacjami, oraz oblicza cenę wypożyczenia.
+  >Ta metoda uzupełnia niezbędne atrybuty tej klasy podanymi jako _wypozyczenie_ informacjami, oraz oblicza cenę wypożyczenia.
 - usunWypozyczenie(_nr_wyp: number_)
-  W praktyce metoda używana jedynie przez Administratora oraz Sprzedawcę ponieważ wypożyczenie jest spotkaniem face-to-face klienta ze sprzedawcą, przez co w razie pomyłki możliwe jest usunięcie wypożyczenia.
+  >W praktyce metoda używana jedynie przez Administratora oraz Sprzedawcę ponieważ wypożyczenie jest spotkaniem face-to-face klienta ze sprzedawcą, przez co w razie pomyłki możliwe jest usunięcie wypożyczenia.
 - stworzWypozyczenieZRezerwacji(_nr_rez: number, user_id: number_)
-  Metoda używana jedynie przez Sprzedawcę. Tworzy wypożyczenie na podstawie danego numeru rezerwacji oraz numeru klienta.
+  >Metoda używana jedynie przez Sprzedawcę. Tworzy wypożyczenie na podstawie danego numeru rezerwacji oraz numeru klienta.
 
 ## Inne
 
