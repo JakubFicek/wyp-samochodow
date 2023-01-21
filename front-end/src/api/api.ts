@@ -223,6 +223,39 @@ export class API{
         console.log(err.message)
       });
     }
+
+    public static zwrocDostepneSamochody = async (url: RequestInfo | URL, data1: Date, data2: Date ) => {
+      return await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+          body: JSON.stringify({
+            data_wypozyczenia: data1,
+            data_zwrotu: data2
+            })
+        }).then((response) => response.json())
+    }
+
+    public static platnosc = async (platnosc: PlatnoscDto) => {
+      await fetch('http://localhost:5000/platnosc/zaliczka', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(platnosc),
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json();
+     })
+     .then((data) => {
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    }
 }
 
 interface daneLogowanie {
@@ -259,6 +292,9 @@ export interface RezerwacjaDto {
   data_zwrotu: Date | null;
 }
 
+export interface PlatnoscDto {
+  kod_blik: number;
+}
 
 export interface nowaRezerwacjaParam {
   rezerwacja: RezerwacjaDto;

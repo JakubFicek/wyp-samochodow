@@ -2,6 +2,8 @@ import { Alert, Button, TextInput } from "@mantine/core";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import { useState } from "react";
 import { API } from "../api/api";
+import useSWR from "swr";
+import { Auto } from "./Types/auto";
 
 
 export function DodajRezerwacje () {
@@ -18,7 +20,12 @@ export function DodajRezerwacje () {
   
     const [dodanieStatus, setDodanieStatus] = useState("");
     const [dodanieErrorValue, setDodanieErrorValue] = useState("");
-  
+    
+    const {data, error} = useSWR(["http://localhost:5000/samochod/dostepnewterminie", value[0], value[1]], API.zwrocDostepneSamochody, { refreshInterval: 2000 });
+
+    if (error) return <div>Failed to load</div>
+    if (!data) return <div>Loading...</div>
+
       const handleSignin = async () => {
           if(!kodBlik) setKodBlikError(true);
           else setKodBlikError(false);
@@ -27,6 +34,9 @@ export function DodajRezerwacje () {
           else setIdSamError(false);
         
           if(kodBlik && idSam) {
+            await API.platnosc({
+                kod_blik: Number(kodBlik)
+            });
             await API.nowaRezerwacja({ rezerwacja: {
                 id_samochodu: Number(idSam),
                 data_wypozyczenia: value[0],
@@ -48,8 +58,13 @@ export function DodajRezerwacje () {
       value={value}
       onChange={setValue}
         />
-
-      
+        <h4>Dostepne samochody</h4>
+        <ul className="list">
+        {data.map((auto: Auto) => 
+            <li key={auto.id}>
+            <h5>ID:{auto.id}, {auto.marka}:{auto.model}:{auto.rok_produkcji} - il miejsc: {auto.il_miejsc}, cena za dzien: {auto.cena_za_dzien} </h5>
+            </li>)}
+        </ul>
        <TextInput
      placeholder="ID samochodu"
      label="ID samochodu"
