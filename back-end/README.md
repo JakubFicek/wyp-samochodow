@@ -26,6 +26,7 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+Odpalony localhost:3000, na przegladarce z wylaczonym corsem.
 
 ## Test
 

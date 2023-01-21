@@ -5,6 +5,11 @@ import KlientService from './klient.service';
 export default class KlientController {
   constructor(private readonly klientService: KlientService) {}
 
+  @Get()
+  async wypiszKlientow(){
+    return this.klientService.zwrocWszystkich();
+  }
+
   @Get('weryfikacja/:id')
   async weryfikacja_danych(@Param('id') id: string) {
     return this.klientService.weryfikacja_danych(Number(id));

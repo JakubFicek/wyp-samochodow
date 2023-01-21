@@ -35,6 +35,10 @@ export default class WypozyczenieService {
       HttpStatus.NOT_FOUND,
     );
   }
+  async wypiszWszystkieWypozyczenia() {
+    const wypozyczenia = await this.wypozyczenieRepository.find();
+    return wypozyczenia;
+  }
 
   //funkcja wypisująca wypożyczenia dla danego zalogowanego klienta
   async wypiszWypozyczenia(user: Klient) {
@@ -46,7 +50,7 @@ export default class WypozyczenieService {
 
   //dodac metode do diagramu klas
   //funkcja tworząca wypożyczenie dla danego zalogowanego klienta
-  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto, user_id: number) {
+  async stworzWypozyczenie(wypozyczenie: WypozyczenieDto) {
     const d1 = new Date(wypozyczenie.data_wypozyczenia);
     const d2 = new Date(wypozyczenie.data_zwrotu);
     if (d1.getTime() > d2.getTime()) {
@@ -99,7 +103,6 @@ export default class WypozyczenieService {
     //console.log(user);
     const noweWypozyczenie = await this.wypozyczenieRepository.create({
       ...wypozyczenie,
-      id_klienta: user_id,
     });
     await this.wypozyczenieRepository.save(noweWypozyczenie);
 
@@ -171,12 +174,6 @@ export default class WypozyczenieService {
 
     this.rezerwacjaRepository.delete(rezerwacja);
 
-    //platnosc
-    // let platnosc: PlatnoscService;
-    // platnosc.platnoscReszty(
-    //   noweWypozyczenie.cena_wypozyczenia,
-    //   noweWypozyczenie.nr_wyp,
-    // );
     return noweWypozyczenie;
   }
 }

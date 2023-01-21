@@ -30,9 +30,14 @@ export default class SamochodController {
     return this.samochodService.wypiszDostepneSamochody();
   }
 
-  @Get('dostepnewterminie')
+  @Post('dostepnewterminie')
   async wypiszDostepneSamochodyWTerminie(@Body() dwieDaty: daty) {
     return this.samochodService.wypiszDostepneSamochodyWTerminie(dwieDaty);
+  }
+
+  @Get('jeden/:id')
+  async zwrocJedenSamochod(@Param('id') id: string) {
+    return this.samochodService.zwrocJeden(Number(id));
   }
 
   @Get(':id')

@@ -1,12 +1,12 @@
-import { Alert, Button, TextInput } from "@mantine/core";
+import { Alert, Button, Select, SelectItem, TextInput } from "@mantine/core";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import { useState } from "react";
-import { API } from "../api/api";
+import { API, Klient } from "../api/api";
 import { Auto } from "./Types/auto";
 import "./Css/klientPage.css";
 import 'dayjs/locale/pl';
 
-export function DodajRezerwacje () {
+export function DodajWypo () {
     const [value, setValue] = useState<DateRangePickerValue>([
         new Date(2023, 1, 1, 16),
         new Date(2023, 1, 5, 16),
@@ -15,37 +15,44 @@ export function DodajRezerwacje () {
     const [idSam, setIdSam] = useState("");
     const [idSamError, setIdSamError] = useState(false);
 
-    const [kodBlik, setKodBlik] = useState("");
-    const [kodBlikError, setKodBlikError] = useState(false);
-  
+    const [idKlienta, setIdKlienta] = useState<string | null>(null);
+    const [idKlientaError, setIdKlientaError] = useState(false);
+
+    const [klienci, setKlienci] = useState<Klient[]>([]);
+
     const [dodanieStatus, setDodanieStatus] = useState("");
     const [dodanieErrorValue, setDodanieErrorValue] = useState("");
     
     const [pokaz, setPokaz] = useState(false);
+    const [pokazK, setPokazK] = useState(false);
 
     const [samochody, setSamochody] = useState<Auto[]>([]);
     const [jesliError, setJesliError] = useState(false);
 
+    const [select, setSelect] = useState<SelectItem[]>([
+      { value: '0', label: 'Nikt' },
+    ]);
+
+    const selectTab: SelectItem[] = [];
+
       const handleSignin = async () => {
-          if(!kodBlik) setKodBlikError(true);
-          else setKodBlikError(false);
-      
           if(!idSam) setIdSamError(true);
           else setIdSamError(false);
+          
+          if(!idKlienta) setIdKlientaError(true);
+          else setIdKlientaError(false);
         
-          if(kodBlik && idSam) {
-            await API.platnosc({
-                kod_blik: Number(kodBlik)
-            });
-            await API.nowaRezerwacja({ rezerwacja: {
+          if( idSam && idKlienta) {
+            await API.noweWypozyczenie({ wypo: {
                 id_samochodu: Number(idSam),
                 data_wypozyczenia: value[0],
                 data_zwrotu: value[1],
+                id_klienta: Number(idKlienta)
             }, 
               setDodanieErrorValue, setDodanieStatus
             });
             setDodanieErrorValue(""); setDodanieStatus("");
-            setIdSam(''); setKodBlik("");
+            setIdSam('');  setIdKlienta(null);
             }
         }
         
@@ -59,6 +66,20 @@ export function DodajRezerwacje () {
           
           if(samochody.length === 0) setJesliError(true);
     }
+
+    const handleKlienci = async () => {
+        
+        const data = await API.zwrocKlientow("http://localhost:5000/klient");
+        if(!data) {return; } else{
+          setKlienci(data);
+        } 
+
+        await data.map((klient: Klient)=> selectTab.push({ value: String(klient.id), label: klient.imie + " " + klient.nazwisko}))
+        console.log(selectTab);
+        setSelect([...selectTab]);
+        setPokazK(true);
+      }
+
         
       return(
       <div className="containerRegister">
@@ -87,16 +108,21 @@ export function DodajRezerwacje () {
      onChange={(e) => setIdSam(e.target.value)}
      error={idSamError && "wprowadz ID"}
        />
-       <p> Zaliczka to 50zl </p>
-       <TextInput
-     placeholder="Podaj KOD DO PLATNOSCI ZALICZKI"
-     label="kod BLIK"
-     radius="xs"
-     required
-     value={kodBlik}
-     onChange={(e) => setKodBlik(e.target.value)}
-     error={kodBlikError && "wprowadz kod BLIK"}
-       />
+        <Button onClick={handleKlienci} color="green" radius="xs"> Wczytaj klientow </Button>
+       { pokazK && <Select
+      label="Klient"
+      placeholder="Wybierz klienta"
+      value={idKlienta} 
+      onChange={setIdKlienta}
+      data={select}
+      creatable
+      getCreateLabel={(query) => `+ Create ${query}`}
+      onCreate={(query) => {
+        const item = { value: query, label: query };
+        setSelect((current) => [...current, item]);
+        return item;
+      }}
+    />}
        {dodanieStatus === "error" && <Alert radius="xs" title="Error!" color="red">
          {dodanieErrorValue}
        </Alert>}
