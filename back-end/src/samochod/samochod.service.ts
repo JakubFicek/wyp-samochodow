@@ -172,8 +172,8 @@ export default class SamochodService {
     } else {
       stan = samochod.stan_pojazdu;
     }
-    if (stan == 'Do przegladu') {
-      stan = 'Do naprawy';
+    if (stan === 'Do przegladu') {
+      samochod.stan_pojazdu = 'Do naprawy';
       await this.samochodRepository.update(id, samochod);
     } else
       throw new HttpException(
