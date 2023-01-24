@@ -5,6 +5,7 @@ import { Navigate } from "react-router";
 import { useState } from "react";
 import { API } from "../api/api";
 import useSWR from "swr";
+import { LogoutPracownik } from "./LogoutPracownik";
 
 export function PracownikPage () {
   const [wybor, setWybor] = useState("")
@@ -41,7 +42,7 @@ export function PracownikPage () {
 
   return(
     <div>
-      <Logout />
+      <LogoutPracownik />
       <div className="klientPage">
         <h1>Strona pracownicza!</h1>
         <h3>Funkcje administratora:</h3>

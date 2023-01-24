@@ -75,7 +75,7 @@ export default class SamochodController {
     return this.samochodService.serwis(Number(id));
   }
 
-  @Patch('napraw/:id')
+  @Patch('donaprawy/:id')
   @UseGuards(JwtAuthenticationGuardPracownik) //serwisant
   async napraw(@Param('id') id: string) {
     return this.samochodService.zepsuty(Number(id));
