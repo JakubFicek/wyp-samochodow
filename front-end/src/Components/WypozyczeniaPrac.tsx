@@ -32,6 +32,10 @@ export function WypozyczeniaPrac () {
         setIsCreationOn(false);
       }
 
+      const handleOddanie = async (id: number) => {
+      
+      }
+
 
     return(
       <div className="rezerwacje">
@@ -54,6 +58,7 @@ export function WypozyczeniaPrac () {
               <ZwrocSamochod id={Number(wypo.id_samochodu)} />
               <p>Data wypozyczenia: {wypo.data_wypozyczenia} Data zwrotu: {wypo.data_zwrotu} Cena: {wypo.cena_wypozyczenia} ID Klienta {wypo.id_klienta}</p>
               <Button onClick={() => handleDelete(Number(wypo.nr_wyp))} radius="md" color="red">Delete</Button>
+              <Button onClick={() => handleOddanie(Number(wypo.id_samochodu))} radius="md" color="grape">Oddanie do przegladu</Button>
           </li>)}
         </ul>
       </div>
