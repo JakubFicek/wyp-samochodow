@@ -36,7 +36,7 @@ export class WeryfikacjaController {
   @Post("pracownik/login")
   LogInPracownik(@Req() request: RequestPracownik) {
     const { user } = request;  
-    const cookie = this.weryfikacjaService.wezCookieZJwtToken(user.id);
+    const cookie = this.weryfikacjaService.wezCookieZJwtTokenDlaPracownika(user.id);
     request.res.setHeader("Set-Cookie", cookie);
     return user;
   }

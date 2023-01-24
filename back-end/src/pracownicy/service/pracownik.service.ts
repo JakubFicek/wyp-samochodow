@@ -165,6 +165,7 @@ export default class PracownikService {
           where: { id },
         });
         if (szukany) {
+          return szukany;
         } else {
           throw new HttpException(
             'Nie znaleziono pracownika o tym id',

@@ -67,13 +67,13 @@ export class WeryfikacjaService {
     public wezCookieZJwtToken(klientId: number) {
       const payload: TokenPayload = {klientId};
       const token = this.jwtService.sign(payload);
-      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
+      return `Authentication1=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
     }
 
     public wezCookieZJwtTokenDlaPracownika(pracownikId: number) {
       const payload: TokenPayloadPracownik = {pracownikId};
       const token = this.jwtService.sign(payload);
-      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
+      return `Authentication2=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
     }
 
     public wezCookiePoWylogowaniu() {
