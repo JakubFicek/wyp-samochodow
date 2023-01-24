@@ -98,6 +98,27 @@ export class API{
       });
     }
 
+    public static logoutPracownik = async (setLogOut: React.Dispatch<React.SetStateAction<boolean>>) => {
+      await fetch('http://localhost:5000/weryfikacja/pracownik/log-out', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          setLogOut(true);
+          return response.json();
+        }
+        return response.json();
+     })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    }
+
     public static zwrocSamochody = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
     public static zwrocPracownika = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
     public static zwrocPracownikow = (url: RequestInfo | URL) => fetch(url).then(r => r.json());
@@ -365,7 +386,7 @@ export class API{
 
     public static zwrotDoPrzegladu = async (id: number) => {
       await fetch(`http://localhost:5000/samochod/zwrot/${id}`, {
-        method: 'POST',
+        method: 'PATCH',
         credentials: 'include',
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -383,6 +404,70 @@ export class API{
         console.log(err.message)
       });
     }
+
+    public static ksiazkaSerwisowa = async (id: number, wpis: string) => {
+      await fetch(`http://localhost:5000/samochod/ksiazka/${id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({wpis}),
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json();
+     })
+     .then((data) => {
+      console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    }
+
+    public static stanNaDostepny = async (id: number) => {
+      await fetch(`http://localhost:5000/samochod/doserwisanta/${id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json();
+     })
+     .then((data) => {
+      console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    } 
+
+    public static doNaprawy = async (id: number) => {
+      await fetch(`http://localhost:5000/samochod/donaprawy/${id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json();
+     })
+     .then((data) => {
+      console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    } 
 }
 
 interface daneLogowanie {
