@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common/decorators';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
-import { platform } from 'os';
 import Klient from 'src/klient/klient.entity';
 import Rezerwacja from 'src/rezerwacja/rezerwacja.entity';
 import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
-import { Column, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Platnosc from './platnosc.entity';
 
 @Injectable()
@@ -46,7 +45,7 @@ export default class PlatnoscService {
     );
   }
 
-  async zaplacZaliczke(klient: Klient, nr_rez: number) {
+  async zaplacZaliczke(klient: Klient, nr_Blik: number) {
     //przy rezerwacji
     const platnosc = this.platnoscRepository.create({
       kwota: 50,

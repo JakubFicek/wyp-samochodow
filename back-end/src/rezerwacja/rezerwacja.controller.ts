@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
 } from '@nestjs/common';
 import { Req, UseGuards } from '@nestjs/common/decorators';
@@ -13,9 +12,6 @@ import RoleGuard from 'src/pracownicy/guard/role.guard';
 import { RequestWithUser } from 'src/typy/requestWithUser.interface';
 import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.guard';
 import JwtAuthenticationGuardPracownik from 'src/weryfikacja/guards/jwt-authenticationP.guard';
-import { JwtStrategyPracownik } from 'src/weryfikacja/strategy/jwtPracownik.strategy';
-
-import { edytujRezerwacjeDto } from './dto/edytujRezerwacje.dto';
 import { RezerwacjaDto } from './dto/rezerwacja.dto';
 import RezerwacjaService from './rezerwacja.service';
 

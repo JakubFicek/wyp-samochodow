@@ -1,13 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { stringify } from 'querystring';
-import Samochod from 'src/samochod/samochod.entity';
 import Wypozyczenie from 'src/wypozyczenie/wypozyczenie.entity';
-import { Column, Repository } from 'typeorm';
-import { edytujKlientDto } from './dto/edytujKlient.dto';
+import {  Repository } from 'typeorm';
 import { KlientDto } from './dto/klient.dto';
 import Klient from './klient.entity';
-import WypozyczenieService from 'src/wypozyczenie/wypozyczenie.service';
 
 @Injectable()
 export default class KlientService {
@@ -17,11 +13,6 @@ export default class KlientService {
     @InjectRepository(Wypozyczenie)
     private wypozyczenieRepository: Repository<Wypozyczenie>,
   ) {}
-
-  //przenieść do samochodu
-  oddanie(samochod: Samochod) {
-    //zaimplementowac najpierw platnosci
-  }
 
   async zwrocWszystkich() {
     return await this.klientRepository.find();
