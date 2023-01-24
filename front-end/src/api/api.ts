@@ -362,6 +362,27 @@ export class API{
         console.log(err.message)
       });
     }
+
+    public static zwrotDoPrzegladu = async (id: number) => {
+      await fetch(`http://localhost:5000/samochod/zwrot/${id}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json();
+     })
+     .then((data) => {
+      console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message)
+      });
+    }
 }
 
 interface daneLogowanie {

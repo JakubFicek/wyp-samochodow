@@ -33,7 +33,6 @@ export default class WypozyczenieController {
   }
 
   @Get()
-  @UseGuards(JwtAuthenticationGuard)
   async wypiszWszystkieWypozyczenia() {
     return this.wypozyczenieService.wypiszWszystkieWypozyczenia();
   }
@@ -45,20 +44,20 @@ export default class WypozyczenieController {
   }
 
   @Post('create')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuardPracownik)
   async stworzWypozyczenie(@Body() wypozyczenie: WypozyczenieDto) {
     return this.wypozyczenieService.stworzWypozyczenie(wypozyczenie);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuardPracownik)
   //dostep do usuniecia wypozyczenia bedzie miec sprzedawca i admin
   async usunWypozyczenie(@Param('id') id: string) {
     return this.wypozyczenieService.usunWypozyczenie(Number(id));
   }
 
   @Post('zrezerwacji/:id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuardPracownik)
   //tylko klient
   async stworzWypozyczenieZRezerwacji(
     @Param('id') id: string,

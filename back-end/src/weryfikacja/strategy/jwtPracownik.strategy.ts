@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import PracownikService from 'src/pracownicy/service/pracownik.service';
 import { TokenPayloadPracownik } from 'src/typy/tokenPayloadPracownik.interface';
-import { TokenPayload } from 'src/typy/tokenPayload.interface';
  
 @Injectable()
 export class JwtStrategyPracownik extends PassportStrategy(Strategy, "jwtPracownik") {
@@ -15,13 +14,13 @@ export class JwtStrategyPracownik extends PassportStrategy(Strategy, "jwtPracown
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
-        return request?.cookies?.Authentication;
+        return request?.cookies?.Authentication2;
       }]),
       secretOrKey: configService.get('JWT_SECRET')
     });
   }
  
-  async validate(payload: TokenPayload) {
-    return this.pracownikService.znajdzPoId(payload.klientId);
+  async validate(payload: TokenPayloadPracownik) {
+    return this.pracownikService.znajdzPoId(payload.pracownikId);
   }
 }

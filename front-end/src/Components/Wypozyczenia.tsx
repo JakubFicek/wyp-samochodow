@@ -13,7 +13,7 @@ export function Wypozyczenia () {
   return(
     <div className="rezerwacje">
       <h2>Twoje wypozyczenia</h2>
-      <p>Powrot do <Link to="/pracownik" style={{color: 'white'}}>strony pracowniczej</Link></p>
+      <p>Powrot do <Link to="/klient" style={{color: 'white'}}>strony klienta</Link></p>
       <ul className="list">
       {data.map((wypo: Wypozyczenie) => 
         <li key={wypo.nr_wyp}>

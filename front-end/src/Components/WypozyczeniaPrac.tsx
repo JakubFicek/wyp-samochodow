@@ -6,7 +6,7 @@ import { API } from "../api/api";
 import { DodajWypo } from "./DodajWypo";
 import { DodajWypozRez } from "./DodajWypozRez";
 import { Wypozyczenie } from "./Wypozyczenia";
-import { ZwrocSamochod } from "./ZwrocSamochod";
+import { ZwrocSamochodP } from "./ZwrocSamochodP";
 
 export function WypozyczeniaPrac () {
     const [isCreationOn, setIsCreationOn] = useState(false);
@@ -32,7 +32,6 @@ export function WypozyczeniaPrac () {
         setIsCreationOn(false);
       }
 
-
     return(
       <div className="rezerwacje">
         <h1>Wypozyczenia</h1>
@@ -47,11 +46,11 @@ export function WypozyczeniaPrac () {
             <DodajWypozRez />
             }
         <h2>Wszystkie wypozyczenia</h2>
-        <p>Powrot do <Link to="/klient" style={{color: 'white'}}>strony glownej</Link></p>
+        <p>Powrot do <Link to="/pracownik" style={{color: 'white'}}>strony glownej</Link></p>
         <ul className="list">
         {data.map((wypo: Wypozyczenie) => 
           <li key={wypo.nr_wyp}>
-              <ZwrocSamochod id={Number(wypo.id_samochodu)} />
+              <ZwrocSamochodP id={Number(wypo.id_samochodu)} />
               <p>Data wypozyczenia: {wypo.data_wypozyczenia} Data zwrotu: {wypo.data_zwrotu} Cena: {wypo.cena_wypozyczenia} ID Klienta {wypo.id_klienta}</p>
               <Button onClick={() => handleDelete(Number(wypo.nr_wyp))} radius="md" color="red">Delete</Button>
           </li>)}
