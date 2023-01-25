@@ -37,23 +37,23 @@ export default class RezerwacjaService {
     if (!samochod) {
       throw new HttpException('Nie ma takiego samochodu', HttpStatus.NOT_FOUND);
     }
-
-    for (let i in samochod.zajete_terminy) {
-      let dateW = samochod.zajete_terminy[i][0].getTime();
-      let dateO = samochod.zajete_terminy[i][1].getTime();
-      if (
-        (d1.getTime() < dateW && d2.getTime() < dateW) ||
-        (d1.getTime() > dateO && d2.getTime() > dateO)
-      ) {
-        //jesli tak, to samochod jest dostepny
-      } else {
-        throw new HttpException(
-          'Samochod nie jest dostepny w tym terminie',
-          HttpStatus.CONFLICT,
-        );
+    if (samochod.zajete_terminy.length !== 0) {
+      for (let i in samochod.zajete_terminy) {
+        let dateW = samochod.zajete_terminy[i][0].getTime();
+        let dateO = samochod.zajete_terminy[i][1].getTime();
+        if (
+          (d1.getTime() < dateW && d2.getTime() < dateW) ||
+          (d1.getTime() > dateO && d2.getTime() > dateO)
+        ) {
+          //jesli tak, to samochod jest dostepny
+        } else {
+          throw new HttpException(
+            'Samochod nie jest dostepny w tym terminie',
+            HttpStatus.CONFLICT,
+          );
+        }
       }
     }
-
     //dodajemy termin przez index 0 -> data_wyp i index 1 -> data_odd
     samochod.zajete_terminy.push([d1, d2]);
 

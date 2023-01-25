@@ -1,4 +1,5 @@
 export class SamochodDto {
+  id: number;
   marka: string;
   model: string;
   rok_produkcji: number;
