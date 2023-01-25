@@ -64,6 +64,24 @@ export default class SamochodService {
       }
       return arrcpy;
     };
+
+    const filter = samochody.filter((samochod) => {
+      for (let i in samochod.zajete_terminy) {
+        let dateW = samochod.zajete_terminy[i][0].getTime();
+        let dateO = samochod.zajete_terminy[i][1].getTime();
+        if (
+          (new Date(daty.data_wypozyczenia).getTime() < dateW &&
+            new Date(daty.data_zwrotu).getTime() < dateW) ||
+          (new Date(daty.data_wypozyczenia).getTime() > dateO &&
+            new Date(daty.data_zwrotu).getTime() > dateO)
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+    return filter;
     return dostepne(samochody);
   }
 

@@ -46,7 +46,7 @@ export default class SamochodController {
 
   @Post()
   async dodaj_samochod(@Body() samochod: SamochodDto) {
-    return this.samochodService.dodaj_samochod(samochod);
+    return await this.samochodService.dodaj_samochod(samochod);
   }
 
   @Patch('zwrot/:id')
@@ -55,7 +55,9 @@ export default class SamochodController {
     @Param('id') id: string,
     //@Body() samochod: edytujSamochodDto,
   ) {
-    return this.samochodService.zwrotDoPrzegladu(Number(id) /*, samochod*/);
+    return await this.samochodService.zwrotDoPrzegladu(
+      Number(id) /*, samochod*/,
+    );
   }
 
   @Patch('stan/:id')
