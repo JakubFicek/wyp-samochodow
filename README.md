@@ -17,6 +17,9 @@ Po instalacji node modules, uruchamiamy w tej samej ścieżce folderu komendę
 `docker-compose up`. To uruchamia obraz Dockera który zawiera informacje o wersji pgAdmina oraz PostgreSQL.
 Uruchomienie backendu odbywa się przez komendę w tej samej ścieżce docelowej
 `npm run start`.
+Następnie aby uruchomić front-end należy wrócić do folderu głównego projektu i przejść do `.\wyp-samochodow\front-end` i należy zainstalować moduły node.js przez `npm install`, a gdy to się skończy uruchomić przez polecenie `npm run start`.
+Ostatnim krokiem jest uruchomienie dowolnej przeglądarki z wyłączoną ochroną, jest to konieczne aby wysyłać requesty. Przeglądarkę chrome uruchamia się taką komendą, gdzie typową ścieżką docelową jest `"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"` lecz może się to różnić w zależności od instalacji. Używamy komendy w wierszu poleceń (nie w PowerShellu): `"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --disable-features=IsolateOrigins, site-per-proces --user-data-dir="C://ChromeDev"` *Uwaga! Nie należy wchodzić na inne adresy na tej przeglądarce niż localhost:3000*
+Aby podejrzeć bazę danych należy uruchomić w dowolnej przeglądarce localhost:8080
 
 ## Zarys
 
