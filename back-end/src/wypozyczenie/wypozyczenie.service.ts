@@ -1,15 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { stringify } from 'querystring';
 import Klient from 'src/klient/klient.entity';
-import { RezerwacjaDto } from 'src/rezerwacja/dto/rezerwacja.dto';
 import Rezerwacja from 'src/rezerwacja/rezerwacja.entity';
 import Samochod from 'src/samochod/samochod.entity';
 import { Repository } from 'typeorm';
 import { WypozyczenieDto } from './dto/wypozyczenie.dto';
 import Wypozyczenie from './wypozyczenie.entity';
-import PlatnoscService from 'src/platnosc/platnosc.service';
-import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
 
 @Injectable()
 export default class WypozyczenieService {

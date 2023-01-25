@@ -8,11 +8,8 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import Rola from 'src/pracownicy/enum/role.enum';
-import RoleGuard from 'src/pracownicy/guard/role.guard';
 import { wpis } from 'src/typy/wpis.interface';
 import { daty } from 'src/typy/wpis.interface';
-import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.guard';
 import JwtAuthenticationGuardPracownik from 'src/weryfikacja/guards/jwt-authenticationP.guard';
 import { edytujSamochodDto } from './dto/edytujSamochod.dto';
 import { SamochodDto } from './dto/samochod.dto';

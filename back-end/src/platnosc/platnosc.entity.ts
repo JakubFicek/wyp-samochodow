@@ -1,4 +1,3 @@
-import { platform } from 'os';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

@@ -13,8 +13,6 @@ import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.gu
 import { WypozyczenieDto } from './dto/wypozyczenie.dto';
 import WypozyczenieService from './wypozyczenie.service';
 import RezerwacjaService from 'src/rezerwacja/rezerwacja.service';
-import RoleGuard from 'src/pracownicy/guard/role.guard';
-import Rola from 'src/pracownicy/enum/role.enum';
 import { id } from 'src/typy/wpis.interface';
 import JwtAuthenticationGuardPracownik from 'src/weryfikacja/guards/jwt-authenticationP.guard';
 

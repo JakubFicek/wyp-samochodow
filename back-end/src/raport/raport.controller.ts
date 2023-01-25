@@ -1,7 +1,5 @@
 import { Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators';
-import Rola from 'src/pracownicy/enum/role.enum';
-import RoleGuard from 'src/pracownicy/guard/role.guard';
 import { RequestPracownik } from 'src/typy/requestPracownik.interface';
 import JwtAuthenticationGuardPracownik from 'src/weryfikacja/guards/jwt-authenticationP.guard';
 import RaportService from './raport.service';

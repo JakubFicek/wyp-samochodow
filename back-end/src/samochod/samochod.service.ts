@@ -1,13 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { stringify } from 'querystring';
 import { wpis } from 'src/typy/wpis.interface';
 import { Repository } from 'typeorm';
 import { edytujSamochodDto } from './dto/edytujSamochod.dto';
 import { SamochodDto } from './dto/samochod.dto';
 import Samochod from './samochod.entity';
 import { daty } from 'src/typy/wpis.interface';
-import { networkInterfaces } from 'os';
 
 @Injectable()
 export default class SamochodService {
@@ -166,7 +164,6 @@ export default class SamochodService {
       stan = samochod.stan_pojazdu;
     }
     if (stan === 'Do naprawy' || stan === 'Do przegladu') {
-      console.log(1);
       samochod.stan_pojazdu = 'Dostepny';
       await this.samochodRepository.update(id, samochod);
     } else

@@ -1,8 +1,6 @@
 import { Controller, Post, UseGuards, Req, Body } from '@nestjs/common';
 import { RequestWithUser } from 'src/typy/requestWithUser.interface';
-import { PlatnoscDto } from './dto/platnosc.dto';
 import PlatnoscService from './platnosc.service';
-import RoleGuard from 'src/pracownicy/guard/role.guard';
 import JwtAuthenticationGuard from 'src/weryfikacja/guards/jwt-authentication.guard';
 
 @Controller('platnosc')
