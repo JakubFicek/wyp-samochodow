@@ -1,6 +1,6 @@
 # Wypożyczalnia samochodów
 
-_Stworzyli: Jakub Ficek, Michał Jurzak, Krystian Gliwa na przedmiot projektowanie oprogramowania._
+_Stworzyli: Jakub Ficek, Michał Jurzak przedmiot projektowanie oprogramowania._
 
 ## Wykorzystane technologie
 
@@ -25,6 +25,9 @@ Aby podejrzeć bazę danych należy uruchomić w dowolnej przeglądarce localhos
 
 Korzystamy w tym programie z technologii aplikacji webowych oraz uproszczeń stosowanych przez nest.js, co uwzględnia nietypową dla klasycznego programowania struktury projektu. Zachęcamy do zapoznania się z oficjalną dokumentacją nest.js poczynając podanych pojęć: https://docs.nestjs.com/.
 W zakładce Overview znajdują się takie pojęcia jak Controllers, Providers oraz Modules.
+
+Projekt oparty jest na poniższym diagramie klas: 
+![image](https://github.com/JakubFicek/wyp-samochodow/assets/122308445/36cf44be-9c2b-4653-8f3b-6b7cb3d0c2eb)
 
 Główna część projektu znajduje się w folderze `.\back-end\src`.
 W naszym przypadku, każda klasa jest podzielona jak powyżej na kilka folderów:
