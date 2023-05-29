@@ -1,6 +1,6 @@
 # Wypożyczalnia samochodów
 
-
+_Stworzyli: Jakub Ficek, Michał Jurzak przedmiot projektowanie oprogramowania._
 
 ## Wykorzystane technologie
 
